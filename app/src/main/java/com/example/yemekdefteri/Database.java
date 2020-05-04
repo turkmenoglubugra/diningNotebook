@@ -16,6 +16,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String TABLO_TARIFLER = "tarifler";
     private static final String ROW_ID = "id";
     private static final String ROW_YEMEK_ADI = "yemek_adi";
+    private static final String ROW_MALZEME = "malzeme";
     private static final String ROW_TARIF = "tarif";
 
 
@@ -28,6 +29,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLO_TARIFLER + "("
                 + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ROW_YEMEK_ADI + " TEXT NOT NULL, "
+                + ROW_MALZEME + " TEXT NOT NULL, "
                 + ROW_TARIF + " TEXT NOT NULL)");
     }
 
@@ -37,11 +39,12 @@ public class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void VeriEkle(String yemek_adi, String tarif){
+    public void VeriEkle(String yemek_adi, String malzemeler, String tarif){
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues cv = new ContentValues();
             cv.put(ROW_YEMEK_ADI, yemek_adi);
+            cv.put(ROW_MALZEME, malzemeler);
             cv.put(ROW_TARIF, tarif);
             db.insert(TABLO_TARIFLER, null,cv);
         }catch (Exception e){
@@ -54,14 +57,16 @@ public class Database extends SQLiteOpenHelper {
         List<String> veriler = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
         try {
-            String[] stunlar = {ROW_ID,ROW_YEMEK_ADI,ROW_TARIF};
+            String[] stunlar = {ROW_ID,ROW_YEMEK_ADI,ROW_MALZEME, ROW_TARIF};
             Cursor cursor = db.query(TABLO_TARIFLER, stunlar,null,null,null,null,null);
             while (cursor.moveToNext()){
                 veriler.add(cursor.getInt(0)
                         + " - "
                         + cursor.getString(1)
                         + " - "
-                        + cursor.getString(2));
+                        + cursor.getString(2)
+                        + " - "
+                        + cursor.getString(3));
             }
         }catch (Exception e){
         }
@@ -80,11 +85,12 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void VeriDuzenle(int id, String ad, String tarif){
+    public void VeriDuzenle(int id, String ad, String malzeme, String tarif){
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues cv = new ContentValues();
             cv.put(ROW_YEMEK_ADI, ad);
+            cv.put(ROW_MALZEME, malzeme);
             cv.put(ROW_TARIF, tarif);
             String where = ROW_ID +" = '"+ id + "'";
             db.update(TABLO_TARIFLER,cv,where,null);

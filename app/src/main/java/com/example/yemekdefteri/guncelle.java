@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class guncelle extends AppCompatActivity {
-    private EditText yemekAdi, yemekTarifi = null;
+    private EditText yemekAdi, yemekTarifi,malzemeler = null;
     private Button btnGuncelle = null;
     private int id;
     @Override
@@ -20,26 +20,30 @@ public class guncelle extends AppCompatActivity {
 
         yemekAdi = (EditText) findViewById(R.id.yemekAdiText);
         yemekTarifi = (EditText) findViewById(R.id.yemekTarifiText);
+        malzemeler = (EditText) findViewById(R.id.malzemelerText);
         btnGuncelle = (Button) findViewById(R.id.btnYeniYemekGuncelle);
 
         Intent myIntent = getIntent();
         id = Integer.valueOf(myIntent.getStringExtra("id"));
         String firstKeyName = myIntent.getStringExtra("firstKeyName");
         String secondKeyName= myIntent.getStringExtra("secondKeyName");
+        String thirdKeyName= myIntent.getStringExtra("thirdKeyName");
         yemekAdi.setText(firstKeyName);
-        yemekTarifi.setText(secondKeyName);
+        malzemeler.setText(secondKeyName);
+        yemekTarifi.setText(thirdKeyName);
 
         btnGuncelle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
                     String adi = yemekAdi.getText().toString().trim();
+                    String malzeme = malzemeler.getText().toString().trim();
                     String tarif = yemekTarifi.getText().toString().trim();
-                    if(adi.equals("") || tarif.equals("")) {
-                        Toast.makeText(getApplicationContext(),"YEMEK ADI VE YEMEK TARİFİ ALANLARI DOLDURULMALIDIR!", Toast.LENGTH_SHORT).show();
+                    if(adi.equals("") || tarif.equals("") || malzeme.equals("")) {
+                        Toast.makeText(getApplicationContext(),"YEMEK ADI, MALZEMELER VE YEMEK TARİFİ ALANLARI DOLDURULMALIDIR!", Toast.LENGTH_SHORT).show();
                     } else {
                         Database vt = new Database(guncelle.this);
-                        vt.VeriDuzenle(id,adi,tarif);
+                        vt.VeriDuzenle(id,adi ,malzeme, tarif);
                         Toast.makeText(getApplicationContext(),"BAŞARIYLA KAYIT GÜNCELLENDİ!", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {

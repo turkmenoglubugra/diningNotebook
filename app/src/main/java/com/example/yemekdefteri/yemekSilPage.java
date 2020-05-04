@@ -62,7 +62,7 @@ public class yemekSilPage  extends AppCompatActivity {
         for (String ws : list) {
             String[] itemBol = ws.split(" - ");
             ids.add(Integer.valueOf(itemBol[0].toString()));
-            listTable.add(itemBol[1].toString()+" - "+itemBol[2].toString());
+            listTable.add(itemBol[1].toString());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekSilPage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
         veriListele.setAdapter(adapter);

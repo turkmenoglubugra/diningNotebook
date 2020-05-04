@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        android:screenOrientation="portrait"
         <activity android:name=".mainpage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

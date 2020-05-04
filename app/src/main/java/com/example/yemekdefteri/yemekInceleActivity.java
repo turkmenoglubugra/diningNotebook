@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class yemekInceleActivity extends AppCompatActivity {
-    private EditText yemekAdi, yemekTarifi = null;
+    private EditText yemekAdi, yemekTarifi, malzemeler= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +20,14 @@ public class yemekInceleActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
         String firstKeyName = myIntent.getStringExtra("firstKeyName");
         String secondKeyName= myIntent.getStringExtra("secondKeyName");
+        String thirdKeyName= myIntent.getStringExtra("thirdKeyName");
 
         yemekAdi = (EditText) findViewById(R.id.yemekAdiText);
         yemekTarifi = (EditText) findViewById(R.id.yemekTarifiText);
+        malzemeler = (EditText) findViewById(R.id.malzemelerText);
 
         yemekAdi.setText(firstKeyName);
-        yemekTarifi.setText(secondKeyName);
+        malzemeler.setText(secondKeyName);
+        yemekTarifi.setText(thirdKeyName);
     }
 }

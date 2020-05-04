@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="10dp"
+    android:layout_margin="20dp"
     android:background="@drawable/yeniyemekpage"
     android:orientation="vertical"
     android:gravity="top"
@@ -15,7 +15,6 @@
         android:id="@+id/yemekAdiTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
         android:background="#D0DED2"
         android:text="YEMEK ADI"
         android:textAlignment="center"
@@ -25,28 +24,50 @@
 
     <EditText
         android:id="@+id/yemekAdiText"
-        android:scrollHorizontally="false"
         android:layout_width="match_parent"
-        android:layout_height="37dp"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_margin="15dp"
+        android:layout_height="50dp"
         android:background="@drawable/textview_border"
+        android:ellipsize="end"
         android:ems="10"
-        android:inputType="textMultiLine"
-        android:text=""
         android:hint="Buraya Yazabilirsiniz..."
+        android:inputType="textMultiLine"
+        android:maxLines="1"
+        android:scrollHorizontally="false"
+        android:singleLine="true"
+        android:text=""
         android:textAlignment="center"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="17dp"
         tools:layout_editor_absoluteY="16dp" />
 
     <TextView
+        android:id="@+id/malzemelerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#D0DED2"
+        android:text="MALZEMELER"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="231dp" />
+
+    <EditText
+        android:id="@+id/malzemelerText"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/textview_border"
+        android:hint="Buraya Yazabilirsiniz..."
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false"
+        android:text=""
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="170dp" />
+
+    <TextView
         android:id="@+id/match_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
         android:background="#D0DED2"
         android:text="YEMEK TARİFİ"
         android:textAlignment="center"
@@ -57,8 +78,7 @@
     <EditText
         android:id="@+id/yemekTarifiText"
         android:layout_width="match_parent"
-        android:layout_height="221dp"
-        android:layout_margin="15dp"
+        android:layout_height="220dp"
         android:background="@drawable/textview_border"
         android:hint="Buraya Yazabilirsiniz..."
         android:inputType="textMultiLine"
@@ -70,11 +90,12 @@
 
     <Button
         android:id="@+id/btnYeniYemekEkle"
-        android:layout_width="251dp"
-        android:layout_height="39dp"
-        android:layout_margin="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:background="@drawable/round"
         android:backgroundTint="#D0DED2"
         android:text="YEMEK EKLE"
+        android:layout_gravity="center_horizontal"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="505dp" />
 </LinearLayout>
