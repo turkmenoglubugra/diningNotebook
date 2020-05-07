@@ -9,11 +9,28 @@
     android:orientation="vertical"
     tools:context=".yemekSilPage">
 
+    <EditText
+        android:id="@+id/aramaText"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#FFFF"
+        android:layout_margin="10dp"
+        android:ellipsize="end"
+        android:ems="10"
+        android:hint="Arayabilirsiniz..."
+        android:inputType="textMultiLine"
+        android:maxLines="1"
+        android:scrollHorizontally="false"
+        android:singleLine="true"
+        android:textAlignment="center"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="16dp" />
     <Button
         android:id="@+id/btnSil"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:background="#FFFFFF"
         android:text="SİL " />
 
@@ -22,7 +39,7 @@
         android:listSelector="#D0DED2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:background="#FFFFFF">
 
     </ListView>
