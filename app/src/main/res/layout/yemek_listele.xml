@@ -17,7 +17,7 @@
         android:layout_margin="10dp"
         android:ellipsize="end"
         android:ems="10"
-        android:hint="Arayabilirsiniz..."
+        android:hint="Yemek Adı Arayabilirsiniz..."
         android:inputType="textMultiLine"
         android:maxLines="1"
         android:scrollHorizontally="false"
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:listSelector="#D0DED2"
+        android:listSelector="#79977D"
         android:background="#FFFFFF"></ListView>
 
 </LinearLayout>
