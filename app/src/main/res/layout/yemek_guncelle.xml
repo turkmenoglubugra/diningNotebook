@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:background="@android:drawable/ic_menu_add"
+        android:scaleType="fitXY"
     />
     <TextView
         android:id="@+id/yemekAdiTextView"
