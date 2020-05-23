@@ -1,9 +1,11 @@
 package com.example.yemekdefteri;
 
 import android.content.Intent;
+import android.database.CursorWindow;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,15 +16,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 public class yemekDuzenlePage extends AppCompatActivity {
     private int idBul = -1;
     private ListView veriListele;
-    private List<String> list;
+    private List<Yemek> list;
     private List<String> listTable = new ArrayList<String>();
-    private List<String> listChange = new ArrayList<String>();
+    private List<Yemek> listChange = new ArrayList<Yemek>();
     private EditText arama;
     private  Button guncelle;
 
@@ -30,6 +33,15 @@ public class yemekDuzenlePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yemek_duzenle);
+
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         guncelle = (Button) findViewById(R.id.btnGuncelle);
         veriListele = (ListView) findViewById(R.id.yemekListe) ;
         arama = (EditText) findViewById(R.id.aramaText);
@@ -53,16 +65,14 @@ public class yemekDuzenlePage extends AppCompatActivity {
                     {
                         Database vt = new Database(yemekDuzenlePage.this);
                         list = vt.VeriListele();
-                        for(String st : list) {
-                            String[] itemBol = st.split(" - ");
-                            if(itemBol[1].contains(s.toString().trim())){
+                        for(Yemek st : list) {
+                            if(st.getYemekAdi().contains(s.toString().trim())){
                                 listChange.add(st);
                             }
                         }
                         listTable.clear();
-                        for (String ws : listChange) {
-                            String[] itemBol = ws.split(" - ");
-                            listTable.add(itemBol[1].toString());
+                        for (Yemek ws : listChange) {
+                            listTable.add(ws.getYemekAdi());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekDuzenlePage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
                         veriListele.setAdapter(adapter);
@@ -79,9 +89,8 @@ public class yemekDuzenlePage extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"LÜTFEN LİSTEDEN BİR KAYIT SEÇİNİZ!",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String item = listChange.get(idBul).toString();
-                String[] itemBol = item.split(" - ");
-                incele(itemBol[0],itemBol[1].toString(),itemBol[2].toString(), itemBol[3]);
+                Yemek item = listChange.get(idBul);
+                incele(item.getId());
                 listChange.clear();
                 if(arama.getText().toString().trim().equals("")) {
                     Listele();
@@ -89,16 +98,14 @@ public class yemekDuzenlePage extends AppCompatActivity {
                     {
                         Database vt = new Database(yemekDuzenlePage.this);
                         list = vt.VeriListele();
-                        for(String st : list) {
-                            String[] itemBol2 = st.split(" - ");
-                            if(itemBol2[1].contains(arama.getText().toString().trim())){
+                        for(Yemek st : list) {
+                            if(st.getYemekAdi().contains(arama.getText().toString().trim())){
                                 listChange.add(st);
                             }
                         }
                         listTable.clear();
-                        for (String ws : listChange) {
-                            String[] itemBol3 = ws.split(" - ");
-                            listTable.add(itemBol3[1].toString());
+                        for (Yemek ws : listChange) {
+                            listTable.add(ws.getYemekAdi());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekDuzenlePage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
                         veriListele.setAdapter(adapter);
@@ -121,20 +128,16 @@ public class yemekDuzenlePage extends AppCompatActivity {
         list = vt.VeriListele();
         listTable.clear();
         listChange.clear();
-        for (String ws : list) {
-            String[] itemBol = ws.split(" - ");
+        for (Yemek ws : list) {
             listChange.add(ws);
-            listTable.add(itemBol[1].toString());
+            listTable.add(ws.getYemekAdi());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekDuzenlePage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
         veriListele.setAdapter(adapter);
     }
-    public void incele(String a0, String a1, String a2, String a3){
+    public void incele(int a0){
         Intent myIntent = new Intent(this, guncelle.class);
         myIntent.putExtra("id", a0);
-        myIntent.putExtra("firstKeyName", a1);
-        myIntent.putExtra("secondKeyName", a2);
-        myIntent.putExtra("thirdKeyName", a3);
         startActivity(myIntent);
     }
 
@@ -148,16 +151,14 @@ public class yemekDuzenlePage extends AppCompatActivity {
                 listChange.clear();
                 Database vt = new Database(yemekDuzenlePage.this);
                 list = vt.VeriListele();
-                for(String st : list) {
-                    String[] itemBol2 = st.split(" - ");
-                    if(itemBol2[1].contains(arama.getText().toString().trim())){
+                for(Yemek st : list) {
+                    if(st.getYemekAdi().contains(arama.getText().toString().trim())){
                         listChange.add(st);
                     }
                 }
                 listTable.clear();
-                for (String ws : listChange) {
-                    String[] itemBol3 = ws.split(" - ");
-                    listTable.add(itemBol3[1].toString());
+                for (Yemek ws : listChange) {
+                    listTable.add(ws.getYemekAdi());
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekDuzenlePage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
                 veriListele.setAdapter(adapter);

@@ -12,12 +12,13 @@ import java.util.List;
 public class Database extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "YEMEK";
-    private static final int DATABASE_VERSION = 1;
-    private static final String TABLO_TARIFLER = "tarifler";
+    private static final int DATABASE_VERSION = 4;
+    private static final String TABLO_TARIFLER = "tarif";
     private static final String ROW_ID = "id";
     private static final String ROW_YEMEK_ADI = "yemek_adi";
     private static final String ROW_MALZEME = "malzeme";
     private static final String ROW_TARIF = "tarif";
+    private static final String ROW_RESIM = "resim";
 
 
     public Database(Context context) {
@@ -30,7 +31,8 @@ public class Database extends SQLiteOpenHelper {
                 + ROW_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ROW_YEMEK_ADI + " TEXT NOT NULL, "
                 + ROW_MALZEME + " TEXT NOT NULL, "
-                + ROW_TARIF + " TEXT NOT NULL)");
+                + ROW_TARIF + " TEXT NOT NULL, "
+                + ROW_RESIM + " BLOB )");
     }
 
     @Override
@@ -39,13 +41,14 @@ public class Database extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void VeriEkle(String yemek_adi, String malzemeler, String tarif){
+    public void VeriEkle(String yemek_adi, String malzemeler, String tarif, byte[] resim){
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues cv = new ContentValues();
             cv.put(ROW_YEMEK_ADI, yemek_adi);
             cv.put(ROW_MALZEME, malzemeler);
             cv.put(ROW_TARIF, tarif);
+            cv.put(ROW_RESIM, resim);
             db.insert(TABLO_TARIFLER, null,cv);
         }catch (Exception e){
         }
@@ -53,20 +56,15 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public List<String> VeriListele(){
-        List<String> veriler = new ArrayList<String>();
+    public List<Yemek> VeriListele(){
+        List<Yemek> veriler = new ArrayList<Yemek>();
         SQLiteDatabase db = this.getReadableDatabase();
         try {
-            String[] stunlar = {ROW_ID,ROW_YEMEK_ADI,ROW_MALZEME, ROW_TARIF};
+            String[] stunlar = {ROW_ID,ROW_YEMEK_ADI,ROW_MALZEME, ROW_TARIF,ROW_RESIM};
             Cursor cursor = db.query(TABLO_TARIFLER, stunlar,null,null,null,null,null);
             while (cursor.moveToNext()){
-                veriler.add(cursor.getInt(0)
-                        + " - "
-                        + cursor.getString(1)
-                        + " - "
-                        + cursor.getString(2)
-                        + " - "
-                        + cursor.getString(3));
+                Yemek obj = new Yemek(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getBlob(4));
+                veriler.add(obj);
             }
         }catch (Exception e){
         }
@@ -85,17 +83,19 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void VeriDuzenle(int id, String ad, String malzeme, String tarif){
+    public void VeriDuzenle(int id, String ad, String malzeme, String tarif, byte[] resim){
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues cv = new ContentValues();
             cv.put(ROW_YEMEK_ADI, ad);
             cv.put(ROW_MALZEME, malzeme);
             cv.put(ROW_TARIF, tarif);
+            cv.put(ROW_RESIM, resim);
             String where = ROW_ID +" = '"+ id + "'";
             db.update(TABLO_TARIFLER,cv,where,null);
         }catch (Exception e){
         }
         db.close();
     }
+
 }

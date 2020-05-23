@@ -20,7 +20,7 @@ public class yemekSilPage  extends AppCompatActivity {
     private Button btnSil;
     private int idBul = -1;
     private ListView veriListele;
-    private  List<String> list;
+    private  List<Yemek> list;
     private List<String> listTable = new ArrayList<String>();
     private List<Integer> ids = new ArrayList<Integer>();
     private EditText arama;
@@ -47,25 +47,23 @@ public class yemekSilPage  extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                List<String> listChange = new ArrayList<String>();
+                List<Yemek> listChange = new ArrayList<Yemek>();
                 if(s.toString().trim().equals("")) {
                     Listele();
                 } else {
                     {
                         Database vt = new Database(yemekSilPage.this);
                         list = vt.VeriListele();
-                        for(String st : list) {
-                            String[] itemBol = st.split(" - ");
-                            if(itemBol[1].contains(s.toString().trim())){
+                        for(Yemek st : list) {
+                            if(st.getYemekAdi().contains(s.toString().trim())){
                                 listChange.add(st);
                             }
                         }
                         listTable.clear();
                         ids.clear();
-                        for (String ws : listChange) {
-                            String[] itemBol = ws.split(" - ");
-                            ids.add(Integer.valueOf(itemBol[0].toString()));
-                            listTable.add(itemBol[1].toString());
+                        for (Yemek ws : listChange) {
+                            ids.add(ws.getId());
+                            listTable.add(ws.getYemekAdi());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekSilPage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
                         veriListele.setAdapter(adapter);
@@ -87,25 +85,23 @@ public class yemekSilPage  extends AppCompatActivity {
                 Database vt = new Database(yemekSilPage.this);
                 vt.VeriSil(idBul);
                 //Sildikten Sonra tekrardan listeliyoruz
-                List<String> listChange = new ArrayList<String>();
+                List<Yemek> listChange = new ArrayList<Yemek>();
                 if(arama.getText().toString().trim().equals("")) {
                     Listele();
                 } else {
                     {
                         Database vt2 = new Database(yemekSilPage.this);
                         list = vt2.VeriListele();
-                        for(String st : list) {
-                            String[] itemBol = st.split(" - ");
-                            if(itemBol[1].contains(arama.getText().toString().trim())){
+                        for(Yemek st : list) {
+                            if(st.getYemekAdi().contains(arama.getText().toString().trim())){
                                 listChange.add(st);
                             }
                         }
                         listTable.clear();
                         ids.clear();
-                        for (String ws : listChange) {
-                            String[] itemBol = ws.split(" - ");
-                            ids.add(Integer.valueOf(itemBol[0].toString()));
-                            listTable.add(itemBol[1].toString());
+                        for (Yemek ws : listChange) {
+                            ids.add(ws.getId());
+                            listTable.add(ws.getYemekAdi());
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekSilPage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
                         veriListele.setAdapter(adapter);
@@ -128,10 +124,9 @@ public class yemekSilPage  extends AppCompatActivity {
         list = vt.VeriListele();
         listTable.clear();
         ids.clear();
-        for (String ws : list) {
-            String[] itemBol = ws.split(" - ");
-            ids.add(Integer.valueOf(itemBol[0].toString()));
-            listTable.add(itemBol[1].toString());
+        for (Yemek ws : list) {
+            ids.add(ws.getId());
+            listTable.add(ws.getYemekAdi());
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekSilPage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
         veriListele.setAdapter(adapter);

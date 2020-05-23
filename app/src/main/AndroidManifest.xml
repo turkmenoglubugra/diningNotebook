@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.yemekdefteri">
+
+
 
     <application
         android:allowBackup="true"
@@ -9,19 +12,31 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mainpage">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".mainpage"
+            android:screenOrientation="portrait">
+         <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+          </intent-filter>
         </activity>
-        <activity android:name=".yeniYemekActivity" />
-        <activity android:name=".yemekListePage"/>
-        <activity android:name=".yemekSilPage" />
-        <activity android:name=".yemekInceleActivity"/>
-        <activity android:name=".yemekDuzenlePage"/>
-        <activity android:name=".guncelle"/>
+        <activity android:name=".yeniYemekActivity"
+            android:label="Yeni Yemek Ekle"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".yemekListePage"
+            android:label="Yemek Listesi"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".yemekSilPage"
+            android:label="Yemek Sil"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".yemekInceleActivity"
+            android:label="Yemek İncele"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".yemekDuzenlePage"
+            android:label="Yemek Düzenle"
+            android:screenOrientation="portrait"
+           />
+        <activity android:name=".guncelle"
+            android:label="Yemek Güncelle"
+            android:screenOrientation="portrait"/>
     </application>
-
 </manifest>
