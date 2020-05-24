@@ -109,8 +109,8 @@ public class guncelle extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("EMİN MİSİNİZ?")
-                        .setContentText("Kayıt Güncellenecektir!")
+                        .setTitleText("Emin Misiniz?")
+                        .setContentText("Kayıt güncellenecektir!")
                         .setConfirmText("Evet, Güncelle!")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
@@ -127,8 +127,8 @@ public class guncelle extends AppCompatActivity {
                     }
                     if(adi.equals("") || tarif.equals("") || malzeme.equals("")) {
                         sDialog
-                                .setTitleText("UYARI!")
-                                .setContentText("Yemek Adı, Malzemeler ve Yemek Tarifi Alanları Doldurulmalıdır!")
+                                .setTitleText("Uyarı!")
+                                .setContentText("Yemek adı, malzemeler ve yemek tarifi alanları doldurulmalıdır!")
                                 .setConfirmText("OK")
                                 .setConfirmClickListener(null)
                                 .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -138,14 +138,14 @@ public class guncelle extends AppCompatActivity {
                         vt.VeriDuzenle(id,adi ,malzeme, tarif,data);
                     }
                     sDialog
-                            .setTitleText("GÜNCELLENDİ!")
+                            .setTitleText("Güncellendi!")
                             .setContentText("Kayıt başarıyla güncellendi!")
                             .setConfirmText("OK")
                             .setConfirmClickListener(null)
                             .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                 } catch (Exception e) {
                     sDialog
-                            .setTitleText("HATA!")
+                            .setTitleText("Hata!")
                             .setContentText("İşlem sırasında hata oluştu!")
                             .setConfirmText("OK")
                             .setConfirmClickListener(null)

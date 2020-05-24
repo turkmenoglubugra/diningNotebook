@@ -104,7 +104,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
             public void onClick(View v) {
                 new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("Emin Misiniz?")
-                        .setContentText("Yemek Kaydedilecektir!")
+                        .setContentText("Yemek kaydedilecektir!")
                         .setConfirmText("Evet, Kaydet!")
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
@@ -123,7 +123,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
                                     if(adi.equals("") || tarif.equals("") || malzeme.equals("") ) {
                                         sDialog
                                                 .setTitleText("UYARI!")
-                                                .setContentText("Yemek Adı, Malzemeler ve Yemek Tarifi Alanları Doldurulmalıdır!")
+                                                .setContentText("Yemek adı,malzemeler ve yemek tarifi alanları doldurulmalıdır!")
                                                 .setConfirmText("OK")
                                                 .setConfirmClickListener(null)
                                                 .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -136,16 +136,16 @@ public class yeniYemekActivity  extends AppCompatActivity {
                                         yemekTarifi.setText("");
                                         yemekResmi.setImageBitmap(null);
                                         sDialog
-                                                .setTitleText("KAYDEDİLDİ!")
-                                                .setContentText("Yemek Başarıyla Kaydedildi!")
+                                                .setTitleText("Kaydedildi!")
+                                                .setContentText("Yemek başarıyla kaydedildi!")
                                                 .setConfirmText("OK")
                                                 .setConfirmClickListener(null)
                                                 .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                                     }
                                 } catch (Exception e) {
                                     sDialog
-                                            .setTitleText("HATA!")
-                                            .setContentText("Hata Meydana Geldi!")
+                                            .setTitleText("Hata!")
+                                            .setContentText("Hata meydana geldi!")
                                             .setConfirmText("OK")
                                             .setConfirmClickListener(null)
                                             .changeAlertType(SweetAlertDialog.ERROR_TYPE);

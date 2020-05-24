@@ -160,6 +160,7 @@ public class yemekDuzenlePage extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        idBul = -1;
     }
     @Override
     protected void onStop() {

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class yemekListePage  extends AppCompatActivity {
     private ListView veriListele;
     private EditText arama;
@@ -97,7 +99,10 @@ public class yemekListePage  extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(idBul == -1){
-                    Toast.makeText(getApplicationContext(),"LÜTFEN LİSTEDEN BİR KAYIT SEÇİNİZ!",Toast.LENGTH_SHORT).show();
+                    new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Lütfen listeden bir kayıt seçiniz!")
+                            .show();
                     return;
                 }
                 Yemek ws = listChange.get(idBul);
