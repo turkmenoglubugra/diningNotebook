@@ -10,23 +10,13 @@
     android:gravity="top"
     tools:context=".guncelle">
 
-
-    <TextView
-        android:id="@+id/yemekResmiTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#D0DED2"
-        android:text="YEMEK RESMİ"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="88dp" />
-
     <ImageView
         android:id="@+id/yemekResmiImageView"
-        android:layout_width="match_parent"
+        android:layout_width="149dp"
         android:layout_height="130dp"
-        android:background="@android:drawable/ic_menu_add"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:background="@android:drawable/ic_menu_report_image"
+        android:layout_margin="10dp"
         android:scaleType="fitXY"
     />
     <TextView
@@ -110,13 +100,24 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:orientation="horizontal">
-
+        <Button
+            android:id="@+id/btnResim"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#D0DED2"
+            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="Resim Ekle"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="505dp" />
         <Button
             android:id="@+id/btnTemizle"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:background="@drawable/round"
             android:backgroundTint="#D0DED2"
+            android:layout_margin="10dp"
             android:layout_gravity="center_vertical|center_horizontal"
             android:text="TEMİZLE"
             tools:layout_editor_absoluteX="16dp"
@@ -125,7 +126,7 @@
         android:id="@+id/btnYeniYemekGuncelle"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:background="@drawable/round"
         android:backgroundTint="#D0DED2"
         android:layout_gravity="center_horizontal|center_vertical"

@@ -26,6 +26,7 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="17dp"
         tools:layout_editor_absoluteY="16dp" />
+    
     <Button
         android:id="@+id/btnSil"
         android:layout_width="match_parent"

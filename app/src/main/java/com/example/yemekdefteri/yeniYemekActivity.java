@@ -5,12 +5,18 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,12 +29,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class yeniYemekActivity  extends AppCompatActivity {
     private EditText yemekAdi, yemekTarifi, malzemeler = null;
     private ImageView yemekResmi;
-    private Button btnKaydet, btnTemizle = null;
+    private Button btnKaydet, btnTemizle,btnResim = null;
     private int GALLERY_REQUEST = 1;
     private Bitmap bitmap = null;
+    private int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +50,47 @@ public class yeniYemekActivity  extends AppCompatActivity {
         btnKaydet = (Button) findViewById(R.id.btnYeniYemekEkle);
         yemekResmi = (ImageView) findViewById(R.id.yemekResmiImageView);
         btnTemizle = (Button) findViewById(R.id.btnTemizle);
-
+        btnResim = (Button) findViewById(R.id.btnResim);
         btnTemizle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SweetAlertDialog pDialog = new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("Temizleniyor ...");
+                pDialog.setCancelable(true);
+                pDialog.show();
                 yemekAdi.setText("");
                 malzemeler.setText("");
                 yemekTarifi.setText("");
                 yemekResmi.setImageBitmap(null);
+                pDialog.cancel();
             }
         });
         yemekResmi.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+
+                if(i == 0) {
+                    View view = findViewById(R.id.yemekResmiImageView);
+                    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+
+                    layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    view.setLayoutParams(layoutParams);
+                    i = 1;
+                } else {
+                    View view = findViewById(R.id.yemekResmiImageView);
+                    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                    layoutParams.width = 390;
+                    layoutParams.height = 350;
+                    view.setLayoutParams(layoutParams);
+                    i = 0;
+                }
+            }
+        });
+
+        btnResim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -64,28 +102,58 @@ public class yeniYemekActivity  extends AppCompatActivity {
         btnKaydet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    String adi = yemekAdi.getText().toString().trim();
-                    String malzeme = malzemeler.getText().toString().trim();
-                    String tarif = yemekTarifi.getText().toString().trim();
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-                    byte[] data = outputStream.toByteArray();
+                new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Emin Misiniz?")
+                        .setContentText("Yemek Kaydedilecektir!")
+                        .setConfirmText("Evet, Kaydet!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                try{
+                                    String adi = yemekAdi.getText().toString().trim();
+                                    String malzeme = malzemeler.getText().toString().trim();
+                                    String tarif = yemekTarifi.getText().toString().trim();
+                                    byte[] data = null;
+                                    if(((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null) {
+                                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+                                        data = outputStream.toByteArray();
+                                    }
 
-                    if(adi.equals("") || tarif.equals("") || malzeme.equals("") ) {
-                        Toast.makeText(getApplicationContext(),"YEMEK ADI, MALZEMELER VE YEMEK TARİFİ ALANLARI DOLDURULMALIDIR!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Database vt = new Database(yeniYemekActivity.this);
-                        vt.VeriEkle(adi, malzeme, tarif, data);
-                        yemekAdi.setText("");
-                        malzemeler.setText("");
-                        yemekTarifi.setText("");
-                        yemekResmi.setImageBitmap(null);
-                        Toast.makeText(getApplicationContext(),"BAŞARIYLA KAYIT OLUŞTURULDU!", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),"HATA OLUŞTU!", Toast.LENGTH_SHORT).show();
-                }
+                                    if(adi.equals("") || tarif.equals("") || malzeme.equals("") ) {
+                                        sDialog
+                                                .setTitleText("UYARI!")
+                                                .setContentText("Yemek Adı, Malzemeler ve Yemek Tarifi Alanları Doldurulmalıdır!")
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(null)
+                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                        return;
+                                    } else {
+                                        Database vt = new Database(yeniYemekActivity.this);
+                                        vt.VeriEkle(adi, malzeme, tarif, data);
+                                        yemekAdi.setText("");
+                                        malzemeler.setText("");
+                                        yemekTarifi.setText("");
+                                        yemekResmi.setImageBitmap(null);
+                                        sDialog
+                                                .setTitleText("KAYDEDİLDİ!")
+                                                .setContentText("Yemek Başarıyla Kaydedildi!")
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(null)
+                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    }
+                                } catch (Exception e) {
+                                    sDialog
+                                            .setTitleText("HATA!")
+                                            .setContentText("Hata Meydana Geldi!")
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                }
+                            }
+                        })
+                        .show();
+
             }
         });
 
@@ -113,11 +181,14 @@ public class yeniYemekActivity  extends AppCompatActivity {
                 }
                 bytes = output.toByteArray();
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                yemekResmi.setImageBitmap(bitmap);
+                Bitmap circularBitmap = ImageConverter.getRoundedCornerBitmap(bitmap, 100);
+                yemekResmi.setImageBitmap(circularBitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
 
     }
+
+
 }

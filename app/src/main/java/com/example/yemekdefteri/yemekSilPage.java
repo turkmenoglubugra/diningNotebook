@@ -18,6 +18,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class yemekSilPage  extends AppCompatActivity {
     private Button btnSil;
     private int idBul = -1;
@@ -84,35 +86,67 @@ public class yemekSilPage  extends AppCompatActivity {
         btnSil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // VeriTabanı classımızı tanımlıyoruz
-                if(idBul == -1){
-                    Toast.makeText(getApplicationContext(),"LÜTFEN LİSTEDEN BİR KAYIT SEÇİNİZ!",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Database vt = new Database(yemekSilPage.this);
-                vt.VeriSil(idBul);
-                //Sildikten Sonra tekrardan listeliyoruz
-                List<Yemek> listChange = new ArrayList<Yemek>();
-                if(arama.getText().toString().trim().equals("")) {
-                    Listele();
-                } else {
-                    {
-                        Database vt2 = new Database(yemekSilPage.this);
-                        list = vt2.VeriListele();
-                        for(Yemek st : list) {
-                            if(st.getYemekAdi().toUpperCase().trim().contains(arama.getText().toString().toUpperCase().trim())){
-                                listChange.add(st);
+                new SweetAlertDialog(yemekSilPage.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Emin Misiniz?")
+                        .setContentText("Kayıt geri getirilemeyecektir!")
+                        .setConfirmText("Evet, kaydı sil!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                if(idBul == -1){
+                                    sDialog
+                                            .setTitleText("Uyarı!")
+                                            .setContentText("Lütfen listeden bir kayıt seçiniz!")
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                    return;
+                                }
+                                try {
+                                    Database vt = new Database(yemekSilPage.this);
+                                    vt.VeriSil(idBul);
+                                    //Sildikten Sonra tekrardan listeliyoruz
+                                    List<Yemek> listChange = new ArrayList<Yemek>();
+                                    if(arama.getText().toString().trim().equals("")) {
+                                        Listele();
+                                    } else {
+                                        {
+                                            Database vt2 = new Database(yemekSilPage.this);
+                                            list = vt2.VeriListele();
+                                            for(Yemek st : list) {
+                                                if(st.getYemekAdi().toUpperCase().trim().contains(arama.getText().toString().toUpperCase().trim())){
+                                                    listChange.add(st);
+                                                }
+                                            }
+                                            ids.clear();
+                                            for (Yemek ws : listChange) {
+                                                ids.add(ws.getId());
+                                            }
+                                            yemekAdapter adapter = new yemekAdapter(yemekSilPage.this, listChange);
+                                            veriListele.setAdapter(adapter);
+                                        }
+                                    }
+                                    idBul = -1;
+                                    sDialog
+                                            .setTitleText("Silindi!")
+                                            .setContentText("Kayıt başarıyla silindi!")
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                } catch (Exception e){
+                                    sDialog
+                                            .setTitleText("Hata!")
+                                            .setContentText("İşlem sırasında hata oluştu!")
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                }
+
                             }
-                        }
-                        ids.clear();
-                        for (Yemek ws : listChange) {
-                            ids.add(ws.getId());
-                        }
-                        yemekAdapter adapter = new yemekAdapter(yemekSilPage.this, listChange);
-                        veriListele.setAdapter(adapter);
-                    }
-                }
-                Toast.makeText(getApplicationContext(),"BAŞARIYLA SİLİNDİ!",Toast.LENGTH_SHORT).show();
+                        })
+                        .show();
+                // VeriTabanı classımızı tanımlıyoruz
+
             }
         });
 

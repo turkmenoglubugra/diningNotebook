@@ -12,13 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class yemekDuzenlePage extends AppCompatActivity {
     private int idBul = -1;
@@ -83,7 +84,10 @@ public class yemekDuzenlePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(idBul == -1){
-                    Toast.makeText(getApplicationContext(),"LÜTFEN LİSTEDEN BİR KAYIT SEÇİNİZ!",Toast.LENGTH_SHORT).show();
+                    new SweetAlertDialog(yemekDuzenlePage.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Lütfen Listeden Bir Kayıt Seçiniz!")
+                            .show();
                     return;
                 }
                 Yemek item = listChange.get(idBul);
