@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="#FFFFFF"
-        android:text="SİL " />
+        android:text="SİL "/>
 
     <ListView
         android:id="@+id/yemekListe"
@@ -40,7 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        >
 
     </ListView>
 

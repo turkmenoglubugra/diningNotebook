@@ -70,7 +70,7 @@ public class yemekListePage  extends AppCompatActivity {
                         Database vt = new Database(yemekListePage.this);
                         list = vt.VeriListele();
                         for(Yemek st : list) {
-                            if(st.getYemekAdi().contains(s.toString().trim())){
+                            if(st.getYemekAdi().toUpperCase().trim().contains(s.toString().toUpperCase().trim())){
                                 listChange.add(st);
                             }
                         }
@@ -78,7 +78,7 @@ public class yemekListePage  extends AppCompatActivity {
                         for (Yemek ws : listChange) {
                             listTable.add(ws.getYemekAdi());
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekListePage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
+                        yemekAdapter adapter = new yemekAdapter(yemekListePage.this, listChange);
                         veriListele.setAdapter(adapter);
                     }
                 }
@@ -105,7 +105,7 @@ public class yemekListePage  extends AppCompatActivity {
             }
         });
         Listele();
-    }
+     }
     public void Listele(){
         Database vt = new Database(yemekListePage.this);
         list = vt.VeriListele();
@@ -115,7 +115,7 @@ public class yemekListePage  extends AppCompatActivity {
             listChange.add(ws);
             listTable.add(ws.getYemekAdi());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekListePage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
+        yemekAdapter adapter = new yemekAdapter(yemekListePage.this, list);
         veriListele.setAdapter(adapter);
     }
 

@@ -5,84 +5,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp"
     android:background="@drawable/receipepage1"
     android:gravity="center_vertical"
     tools:context=".mainpage">
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btnYeniYemek"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
+            android:layout_width="130dp"
+            android:layout_height="140dp"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="25dp"
+            android:gravity="center"
+            android:layout_margin="30dp"
             android:background="@drawable/round"
-            android:padding="20dp"
             android:text="YENİ YEMEK" />
 
         <Button
             android:id="@+id/btnYemekListesi"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="25dp"
-            android:background="@drawable/round"
-            android:padding="10dp"
-            android:text="YEMEK LİSTESİ" />
-
-    </GridLayout>
-
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-
-        <Button
-            android:id="@+id/btnYemekKaldir"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:layout_row="0"
-            android:layout_column="0"
+            android:layout_width="130dp"
+            android:layout_height="140dp"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_margin="30dp"
             android:background="@drawable/round"
-            android:padding="20dp"
+            android:text="YEMEK LİSTESİ" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnYemekKaldir"
+            android:layout_width="130dp"
+            android:layout_height="140dp"
+            android:layout_margin="30dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:background="@drawable/round"
             android:text="YEMEK SİL" />
 
         <Button
             android:id="@+id/btnYemekDuzenle"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
+            android:layout_width="130dp"
+            android:layout_height="140dp"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="25dp"
+            android:layout_margin="30dp"
             android:background="@drawable/round"
-            android:padding="7dp"
             android:text="YEMEK DÜZENLE" />
 
-    </GridLayout>
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
+    </LinearLayout>
 
-
-        <Button
-            android:id="@+id/btnHakkinda"
-            android:layout_width="wrap_content"
-            android:layout_height="90dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="25dp"
-            android:background="@drawable/round"
-            android:padding="20dp"
-            android:text="İLETİŞİM" />
-    </GridLayout>
 
 </LinearLayout>

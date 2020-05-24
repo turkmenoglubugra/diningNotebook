@@ -84,7 +84,7 @@ public class guncelle extends AppCompatActivity {
                     String tarif = yemekTarifi.getText().toString().trim();
                     if(((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null) {
                         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
                         data = outputStream.toByteArray();
                     }
                     if(adi.equals("") || tarif.equals("") || malzeme.equals("")) {

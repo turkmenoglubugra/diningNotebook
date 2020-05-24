@@ -54,13 +54,6 @@ public class mainpage extends AppCompatActivity {
         });
 
 
-        hakkinda = findViewById(R.id.btnHakkinda);
-        hakkinda.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                iletisim();
-            }
-        });
     }
 
     public void yemekEkleAc(){

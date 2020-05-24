@@ -1,5 +1,6 @@
 package com.example.yemekdefteri;
 
+import android.database.CursorWindow;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,6 @@ public class yemekSilPage  extends AppCompatActivity {
     private int idBul = -1;
     private ListView veriListele;
     private  List<Yemek> list;
-    private List<String> listTable = new ArrayList<String>();
     private List<Integer> ids = new ArrayList<Integer>();
     private EditText arama;
 
@@ -29,6 +30,14 @@ public class yemekSilPage  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yemek_sil);
+
+        try {
+            Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
+            field.setAccessible(true);
+            field.set(null, 100 * 1024 * 1024); //the 100MB is the new size
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         veriListele = (ListView) findViewById(R.id.yemekListe) ;
         btnSil = (Button) findViewById(R.id.btnSil);
@@ -59,13 +68,11 @@ public class yemekSilPage  extends AppCompatActivity {
                                 listChange.add(st);
                             }
                         }
-                        listTable.clear();
                         ids.clear();
                         for (Yemek ws : listChange) {
                             ids.add(ws.getId());
-                            listTable.add(ws.getYemekAdi());
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekSilPage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
+                        yemekAdapter adapter = new yemekAdapter(yemekSilPage.this, listChange);
                         veriListele.setAdapter(adapter);
                     }
                 }
@@ -93,17 +100,15 @@ public class yemekSilPage  extends AppCompatActivity {
                         Database vt2 = new Database(yemekSilPage.this);
                         list = vt2.VeriListele();
                         for(Yemek st : list) {
-                            if(st.getYemekAdi().contains(arama.getText().toString().trim())){
+                            if(st.getYemekAdi().toUpperCase().trim().contains(arama.getText().toString().toUpperCase().trim())){
                                 listChange.add(st);
                             }
                         }
-                        listTable.clear();
                         ids.clear();
                         for (Yemek ws : listChange) {
                             ids.add(ws.getId());
-                            listTable.add(ws.getYemekAdi());
                         }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekSilPage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
+                        yemekAdapter adapter = new yemekAdapter(yemekSilPage.this, listChange);
                         veriListele.setAdapter(adapter);
                     }
                 }
@@ -122,13 +127,11 @@ public class yemekSilPage  extends AppCompatActivity {
     public void Listele(){
         Database vt = new Database(yemekSilPage.this);
         list = vt.VeriListele();
-        listTable.clear();
         ids.clear();
         for (Yemek ws : list) {
             ids.add(ws.getId());
-            listTable.add(ws.getYemekAdi());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(yemekSilPage.this, android.R.layout.simple_list_item_1,android.R.id.text1,listTable);
+        yemekAdapter adapter = new yemekAdapter(yemekSilPage.this, list);
         veriListele.setAdapter(adapter);
     }
 
