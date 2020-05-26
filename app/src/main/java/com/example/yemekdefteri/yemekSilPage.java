@@ -128,7 +128,7 @@ public class yemekSilPage  extends AppCompatActivity {
                                     }
                                     idBul = -1;
                                     sDialog
-                                            .setTitleText("Silindi!")
+                                            .setTitleText("Başarılı!")
                                             .setContentText("Kayıt başarıyla silindi!")
                                             .setConfirmText("OK")
                                             .setConfirmClickListener(null)

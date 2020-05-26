@@ -114,16 +114,16 @@ public class yeniYemekActivity  extends AppCompatActivity {
                                     String malzeme = malzemeler.getText().toString().trim();
                                     String tarif = yemekTarifi.getText().toString().trim();
                                     byte[] data = null;
-                                    if(((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null) {
+                                    if((yemekResmi.getDrawable())!= null) {
                                         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                                         ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
                                         data = outputStream.toByteArray();
                                     }
 
-                                    if(adi.equals("") || tarif.equals("") || malzeme.equals("") ) {
+                                    if(adi.equals("")) {
                                         sDialog
-                                                .setTitleText("UYARI!")
-                                                .setContentText("Yemek adı,malzemeler ve yemek tarifi alanları doldurulmalıdır!")
+                                                .setTitleText("Uyarı!")
+                                                .setContentText("Yemek adı alanlanı doldurulmalıdır!")
                                                 .setConfirmText("OK")
                                                 .setConfirmClickListener(null)
                                                 .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -136,7 +136,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
                                         yemekTarifi.setText("");
                                         yemekResmi.setImageBitmap(null);
                                         sDialog
-                                                .setTitleText("Kaydedildi!")
+                                                .setTitleText("Başarılı!")
                                                 .setContentText("Yemek başarıyla kaydedildi!")
                                                 .setConfirmText("OK")
                                                 .setConfirmClickListener(null)
@@ -162,8 +162,6 @@ public class yeniYemekActivity  extends AppCompatActivity {
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-
-
         if (resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();

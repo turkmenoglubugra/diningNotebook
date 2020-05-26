@@ -125,10 +125,10 @@ public class guncelle extends AppCompatActivity {
                         ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
                         data = outputStream.toByteArray();
                     }
-                    if(adi.equals("") || tarif.equals("") || malzeme.equals("")) {
+                    if(adi.equals("")) {
                         sDialog
                                 .setTitleText("Uyarı!")
-                                .setContentText("Yemek adı, malzemeler ve yemek tarifi alanları doldurulmalıdır!")
+                                .setContentText("Yemek adı alanlanı doldurulmalıdır!")
                                 .setConfirmText("OK")
                                 .setConfirmClickListener(null)
                                 .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -138,7 +138,7 @@ public class guncelle extends AppCompatActivity {
                         vt.VeriDuzenle(id,adi ,malzeme, tarif,data);
                     }
                     sDialog
-                            .setTitleText("Güncellendi!")
+                            .setTitleText("Başarılı!")
                             .setContentText("Kayıt başarıyla güncellendi!")
                             .setConfirmText("OK")
                             .setConfirmClickListener(null)
