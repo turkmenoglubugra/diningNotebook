@@ -27,14 +27,6 @@
         tools:layout_editor_absoluteX="17dp"
         tools:layout_editor_absoluteY="16dp" />
     
-    <Button
-        android:id="@+id/btnSil"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#FFFFFF"
-        android:text="SİL "/>
-
     <ListView
         android:id="@+id/yemekListe"
         android:listSelector="#79977D"

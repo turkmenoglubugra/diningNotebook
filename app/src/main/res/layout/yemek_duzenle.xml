@@ -26,13 +26,6 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="17dp"
         tools:layout_editor_absoluteY="16dp" />
-    <Button
-        android:id="@+id/btnGuncelle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="#FFFFFF"
-        android:text="DÜZENLE " />
     <ListView
         android:id="@+id/yemekListe"
         android:listSelector="#79977D"

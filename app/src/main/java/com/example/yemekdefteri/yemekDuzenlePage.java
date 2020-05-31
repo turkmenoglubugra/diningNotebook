@@ -27,7 +27,6 @@ public class yemekDuzenlePage extends AppCompatActivity {
     private List<Yemek> list;
     private List<Yemek> listChange = new ArrayList<Yemek>();
     private EditText arama;
-    private  Button guncelle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,6 @@ public class yemekDuzenlePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        guncelle = (Button) findViewById(R.id.btnGuncelle);
         veriListele = (ListView) findViewById(R.id.yemekListe) ;
         arama = (EditText) findViewById(R.id.aramaText);
         arama.addTextChangedListener(new TextWatcher() {
@@ -80,43 +78,38 @@ public class yemekDuzenlePage extends AppCompatActivity {
             }
         });
 
-        guncelle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(idBul == -1){
-                    new SweetAlertDialog(yemekDuzenlePage.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Oops...")
-                            .setContentText("Lütfen Listeden Bir Kayıt Seçiniz!")
-                            .show();
-                    return;
-                }
-                Yemek item = listChange.get(idBul);
-                incele(item.getId());
-                listChange.clear();
-                if(arama.getText().toString().trim().equals("")) {
-                    Listele();
-                } else {
-                    {
-                        Database vt = new Database(yemekDuzenlePage.this);
-                        list = vt.VeriListele();
-                        for(Yemek st : list) {
-                            if(st.getYemekAdi().contains(arama.getText().toString().trim())){
-                                listChange.add(st);
-                            }
-                        }
-                        yemekAdapter adapter = new yemekAdapter(yemekDuzenlePage.this, listChange);
-                        veriListele.setAdapter(adapter);
-                    }
-                }
-            }
-        });
         Listele();
 
         veriListele.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 idBul = position;
-            }
+                    if(idBul == -1){
+                        new SweetAlertDialog(yemekDuzenlePage.this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("Oops...")
+                                .setContentText("Lütfen Listeden Bir Kayıt Seçiniz!")
+                                .show();
+                        return;
+                    }
+                    Yemek item = listChange.get(idBul);
+                    incele(item.getId());
+                    listChange.clear();
+                    if(arama.getText().toString().trim().equals("")) {
+                        Listele();
+                    } else {
+                        {
+                            Database vt = new Database(yemekDuzenlePage.this);
+                            list = vt.VeriListele();
+                            for(Yemek st : list) {
+                                if(st.getYemekAdi().contains(arama.getText().toString().trim())){
+                                    listChange.add(st);
+                                }
+                            }
+                            yemekAdapter adapter = new yemekAdapter(yemekDuzenlePage.this, listChange);
+                            veriListele.setAdapter(adapter);
+                        }
+                    }
+                }
         });
     }
 

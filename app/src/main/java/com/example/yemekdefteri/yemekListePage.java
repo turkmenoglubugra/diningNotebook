@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +19,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -29,7 +34,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class yemekListePage  extends AppCompatActivity {
     private ListView veriListele;
     private EditText arama;
-    private Button incele;
     private int idBul = -1;
     private List<Yemek> list;
     private List<String> listTable = new ArrayList<String>();
@@ -40,6 +44,7 @@ public class yemekListePage  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yemek_listele);
 
+
         try {
             Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
             field.setAccessible(true);
@@ -49,7 +54,6 @@ public class yemekListePage  extends AppCompatActivity {
         }
         veriListele = (ListView) findViewById(R.id.yemekListe);
         arama = (EditText) findViewById(R.id.aramaText);
-        incele = (Button) findViewById(R.id.btnIncele);
 
         arama.addTextChangedListener(new TextWatcher() {
 
@@ -91,22 +95,15 @@ public class yemekListePage  extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 idBul = position;
-
-            }
-        });
-
-        incele.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(idBul == -1){
-                    new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.ERROR_TYPE)
-                            .setTitleText("Oops...")
-                            .setContentText("Lütfen listeden bir kayıt seçiniz!")
-                            .show();
-                    return;
-                }
-                Yemek ws = listChange.get(idBul);
-                incele(ws.getId());
+                    if(idBul == -1){
+                        new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("Oops...")
+                                .setContentText("Lütfen listeden bir kayıt seçiniz!")
+                                .show();
+                        return;
+                    }
+                    Yemek ws = listChange.get(idBul);
+                    incele(ws.getId());
             }
         });
         Listele();

@@ -38,5 +38,8 @@
         <activity android:name=".guncelle"
             android:label="Yemek Güncelle"
             android:screenOrientation="portrait"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2814589180123732~1122066983"/>
     </application>
 </manifest>
