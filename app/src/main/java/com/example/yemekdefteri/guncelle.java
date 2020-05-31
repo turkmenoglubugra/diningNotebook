@@ -81,9 +81,13 @@ public class guncelle extends AppCompatActivity {
         btnResim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
+                    yemekResmi.setImageBitmap(null);
+                } else {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                }
             }
         });
         yemekResmi.setOnClickListener(new View.OnClickListener() {

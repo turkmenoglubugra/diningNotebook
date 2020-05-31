@@ -112,7 +112,7 @@
             android:backgroundTint="#D0DED2"
             android:layout_margin="10dp"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:text="RESİM EKLE"
+            android:text="RESİM\n EKLE/SİL"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="505dp" />
         <Button
