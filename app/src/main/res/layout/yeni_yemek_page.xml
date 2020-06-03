@@ -8,7 +8,7 @@
     android:background="#FFFF"
     android:orientation="vertical"
     android:gravity="top"
-    tools:context=".yeniYemekActivity">
+    tools:context="com.yemekDefteri.yeniYemekActivity">
 
     <ImageView
         android:id="@+id/yemekResmiImageView"

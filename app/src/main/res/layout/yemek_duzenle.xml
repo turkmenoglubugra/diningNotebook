@@ -7,7 +7,7 @@
     android:layout_margin="10dp"
     android:background="#D0DED2"
     android:orientation="vertical"
-    tools:context=".yemekDuzenlePage">
+    tools:context="com.yemekDefteri.yemekDuzenlePage">
 
     <EditText
         android:id="@+id/aramaText"

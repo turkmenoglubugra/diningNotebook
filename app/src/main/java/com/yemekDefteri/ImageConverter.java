@@ -1,4 +1,4 @@
-package com.example.yemekdefteri;
+package com.yemekDefteri;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

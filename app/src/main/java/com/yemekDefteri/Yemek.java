@@ -1,4 +1,4 @@
-package com.example.yemekdefteri;
+package com.yemekDefteri;
 
 public class Yemek {
     private int id;

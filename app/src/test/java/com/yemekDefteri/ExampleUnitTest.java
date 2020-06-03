@@ -1,4 +1,4 @@
-package com.example.yemekdefteri;
+package com.yemekDefteri;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.yemekdefteri;
+package com.yemekDefteri;
 
 
 import android.app.Activity;
@@ -10,7 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.time.Year;
+import com.yemekDefteri.R;
+
 import java.util.List;
 
 

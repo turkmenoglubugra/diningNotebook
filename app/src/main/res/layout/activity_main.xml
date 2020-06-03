@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@drawable/receipepage1"
     android:gravity="center_vertical"
-    tools:context=".mainpage">
+    tools:context="com.yemekDefteri.mainpage">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,6 +63,11 @@
             android:text="YEMEK DÜZENLE" />
 
     </LinearLayout>
-
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:adSize="FULL_BANNER"
+        app:adUnitId="ca-app-pub-2814589180123732/4676338611"></com.google.android.gms.ads.AdView>
 
 </LinearLayout>

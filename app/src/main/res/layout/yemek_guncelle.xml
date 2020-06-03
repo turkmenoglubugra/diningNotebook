@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="10dp"
     android:background="#FFFF"
     android:orientation="vertical"
     android:gravity="top"
-    tools:context=".guncelle">
+    tools:context="com.yemekDefteri.guncelle">
 
     <ImageView
         android:id="@+id/yemekResmiImageView"
@@ -133,5 +132,16 @@
         android:text="GÜNCELLE"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="505dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adSize="FULL_BANNER"
+            app:adUnitId="ca-app-pub-2814589180123732/4676338611"></com.google.android.gms.ads.AdView>
+
     </LinearLayout>
 </LinearLayout>

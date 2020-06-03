@@ -1,4 +1,4 @@
-package com.example.yemekdefteri;
+package com.yemekDefteri;
 
 import android.database.CursorWindow;
 import android.os.Bundle;
@@ -7,16 +7,15 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.yemekDefteri.R;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
@@ -35,6 +34,8 @@ public class yemekSilPage  extends AppCompatActivity {
     private List<Integer> ids = new ArrayList<Integer>();
     private EditText arama;
     private InterstitialAd mInterstitialAd;
+    private AdView mAdView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class yemekSilPage  extends AppCompatActivity {
         });
 
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-2814589180123732/4578930417");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         mInterstitialAd.setAdListener(new AdListener() {
