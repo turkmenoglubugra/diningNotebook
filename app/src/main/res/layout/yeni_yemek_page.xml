@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     android:background="#FFFF"
     android:orientation="vertical"
     android:gravity="top"
@@ -63,7 +62,7 @@
     <EditText
         android:id="@+id/malzemelerText"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:background="@drawable/textview_border"
         android:hint="Buraya Yazabilirsiniz..."
         android:inputType="textMultiLine"
@@ -87,15 +86,13 @@
     <EditText
         android:id="@+id/yemekTarifiText"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="170dp"
         android:background="@drawable/textview_border"
         android:hint="Buraya Yazabilirsiniz..."
         android:inputType="textMultiLine"
         android:scrollHorizontally="false"
         android:text=""
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="170dp" />
+        android:textAlignment="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,7 +111,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:text="RESİM\n EKLE/SİL"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="505dp" />
+            tools:layout_editor_absoluteY="405dp" />
         <Button
             android:id="@+id/btnTemizle"
             android:layout_width="wrap_content"
@@ -125,7 +122,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:text="TEMİZLE"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="505dp" />
+            tools:layout_editor_absoluteY="405dp" />
 
         <Button
             android:id="@+id/btnYeniYemekEkle"
@@ -137,7 +134,7 @@
             android:backgroundTint="#D0DED2"
             android:text="KAYDET"
             tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="505dp" />
+            tools:layout_editor_absoluteY="405dp" />
 
     </LinearLayout>
 </LinearLayout>

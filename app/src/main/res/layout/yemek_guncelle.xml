@@ -61,7 +61,7 @@
     <EditText
         android:id="@+id/malzemelerText"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="75dp"
         android:background="@drawable/textview_border"
         android:hint="Buraya Yazabilirsiniz..."
         android:inputType="textMultiLine"
@@ -84,15 +84,13 @@
     <EditText
         android:id="@+id/yemekTarifiText"
         android:layout_width="match_parent"
-        android:layout_height="224dp"
+        android:layout_height="120dp"
         android:background="@drawable/textview_border"
         android:hint="Buraya Yazabilirsiniz..."
         android:inputType="textMultiLine"
         android:scrollHorizontally="false"
         android:text=""
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="170dp" />
+        android:textAlignment="center" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

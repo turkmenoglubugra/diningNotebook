@@ -87,7 +87,7 @@
     <EditText
         android:id="@+id/yemekTarifiText"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="200dp"
         android:background="@drawable/textview_border"
         android:editable="false"
         android:hint="Buraya Yazabilirsiniz..."
@@ -97,6 +97,7 @@
         android:textAlignment="center"
         tools:layout_editor_absoluteX="15dp"
         tools:layout_editor_absoluteY="170dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
