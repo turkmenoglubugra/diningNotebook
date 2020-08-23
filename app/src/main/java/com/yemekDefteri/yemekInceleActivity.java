@@ -26,7 +26,7 @@ public class yemekInceleActivity extends AppCompatActivity {
     private  Intent myIntent;
     private int i = 0;
     private AdView mAdView;
-
+    private AdView adView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,7 @@ public class yemekInceleActivity extends AppCompatActivity {
         yemekTarifi = (EditText) findViewById(R.id.yemekTarifiText);
         malzemeler = (EditText) findViewById(R.id.malzemelerText);
         yemekResmi = (ImageView) findViewById(R.id.yemekResmiImageView);
-
+        adView = (AdView) findViewById(R.id.adView);
         yemekResmi.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -52,6 +52,7 @@ public class yemekInceleActivity extends AppCompatActivity {
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     view.setLayoutParams(layoutParams);
                     i = 1;
+                    adView.setVisibility(View.INVISIBLE);
                 } else {
                     View view = findViewById(R.id.yemekResmiImageView);
                     ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
@@ -59,6 +60,7 @@ public class yemekInceleActivity extends AppCompatActivity {
                     layoutParams.height = 350;
                     view.setLayoutParams(layoutParams);
                     i = 0;
+                    adView.setVisibility(View.VISIBLE);
                 }
             }
         });

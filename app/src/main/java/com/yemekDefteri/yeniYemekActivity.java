@@ -98,6 +98,9 @@ public class yeniYemekActivity  extends AppCompatActivity {
                     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     view.setLayoutParams(layoutParams);
+                    btnKaydet.setVisibility(View.INVISIBLE);
+                    btnResim.setVisibility(View.INVISIBLE);
+                    btnTemizle.setVisibility(View.INVISIBLE);
                     i = 1;
                 } else {
                     View view = findViewById(R.id.yemekResmiImageView);
@@ -106,6 +109,9 @@ public class yeniYemekActivity  extends AppCompatActivity {
                     layoutParams.height = 350;
                     view.setLayoutParams(layoutParams);
                     i = 0;
+                    btnKaydet.setVisibility(View.VISIBLE);
+                    btnResim.setVisibility(View.VISIBLE);
+                    btnTemizle.setVisibility(View.VISIBLE);
                 }
             }
         });
