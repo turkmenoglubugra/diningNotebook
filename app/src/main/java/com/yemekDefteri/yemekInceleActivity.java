@@ -2,6 +2,7 @@ package com.yemekDefteri;
 
 import android.Manifest;
 import android.app.ActionBar;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -27,6 +29,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -42,6 +46,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class yemekInceleActivity extends AppCompatActivity {
     private EditText yemekAdi, yemekTarifi, malzemeler = null;
@@ -164,15 +170,16 @@ public class yemekInceleActivity extends AppCompatActivity {
                     canvas.save();
                     myPdfDocument.finishPage(myPage1);
 
-                    File file = new File(Environment.getExternalStorageDirectory(), yemekAdi.getText().toString().toUpperCase()+".pdf");
+                    File file = new File(Environment.getExternalStorageDirectory(), "/"+yemekAdi.getText().toString().toUpperCase()+".pdf");
                     try {
                         myPdfDocument.writeTo(new FileOutputStream(file));
+                        myPdfDocument.close();
+                        new SweetAlertDialog(yemekInceleActivity.this)
+                                .setTitleText("Pdf başarıyla oluşturuldu.\n("+Environment.getExternalStorageDirectory()+"/"+yemekAdi.getText().toString().toUpperCase()+".pdf)")
+                                .show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    myPdfDocument.close();
-                    // copy some things
                 } else {
                     checkMermission();
                 }

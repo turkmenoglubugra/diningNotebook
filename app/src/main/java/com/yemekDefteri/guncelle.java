@@ -295,6 +295,13 @@ public class guncelle extends AppCompatActivity {
                 if (report.isAnyPermissionPermanentlyDenied()) {
                     checkMermission();
                 } else if (report.areAllPermissionsGranted()) {
+                    if(yemekAdi.getText().toString().trim().equals("")){
+                        new SweetAlertDialog(guncelle.this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("Oops...")
+                                .setContentText("Yemek adı boş olamaz!")
+                                .show();
+                        return;
+                    }
                     PdfDocument myPdfDocument = new PdfDocument();
                     Paint myPaint = new Paint();
                     myPaint.setTextSize(12);
@@ -344,15 +351,16 @@ public class guncelle extends AppCompatActivity {
                     canvas.save();
                     myPdfDocument.finishPage(myPage1);
 
-                    File file = new File(Environment.getExternalStorageDirectory(), yemekAdi.getText().toString().toUpperCase()+".pdf");
+                    File file = new File(Environment.getExternalStorageDirectory(), "/"+yemekAdi.getText().toString().toUpperCase()+".pdf");
                     try {
                         myPdfDocument.writeTo(new FileOutputStream(file));
+                        myPdfDocument.close();
+                        new SweetAlertDialog(guncelle.this)
+                                .setTitleText("Pdf başarıyla oluşturuldu.\n("+Environment.getExternalStorageDirectory()+"/"+yemekAdi.getText().toString().toUpperCase()+".pdf)")
+                                .show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    myPdfDocument.close();
-                    // copy some things
                 } else {
                     checkMermission();
                 }
