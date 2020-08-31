@@ -123,10 +123,4 @@ public class mainpage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public  void iletisim () {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", "bugrakaanturkmenoglu@gmail.com", null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "YEMEK TARİFİ DEFTERİ APP");
-        startActivity(Intent.createChooser(emailIntent, null));
-    }
 }

@@ -1,13 +1,22 @@
 package com.yemekDefteri;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,6 +25,11 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.yemekDefteri.R;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -25,9 +39,12 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -225,5 +242,109 @@ public class yeniYemekActivity  extends AppCompatActivity {
 
     }
 
+    private void checkMermission() {
+        Dexter.withActivity(this)
+                .withPermissions(
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        android.Manifest.permission.ACCESS_NETWORK_STATE,
+                        Manifest.permission.INTERNET
+                ).withListener(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                if (report.isAnyPermissionPermanentlyDenied()) {
+                    checkMermission();
+                } else if (report.areAllPermissionsGranted()) {
+                    PdfDocument myPdfDocument = new PdfDocument();
+                    Paint myPaint = new Paint();
+                    myPaint.setTextSize(12);
+                    myPaint.setStyle(Paint.Style.FILL);
 
+                    Paint boldPaint = new Paint();
+                    boldPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    int i = 0;
+                    PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(400, 650, 1).create();
+                    PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
+                    Canvas canvas = myPage1.getCanvas();
+                    canvas.drawText(yemekAdi.getText().toString().toUpperCase(), 10, 50, boldPaint);
+                    canvas.drawText("MALZEMELER", 10, 100, boldPaint);
+                    String text = "";
+                    int y=125;
+                    for(String ws : malzemeler.getText().toString().split(" ")) {
+                        i = i + 1;
+                        if ((text + ws).length() > 60) {
+                            canvas.drawText(text, 10, y, myPaint);
+                            y = y + 20;
+                            text = ws;
+                        } else {
+                            text = text +  " " + ws;
+                            if(i == malzemeler.getText().toString().split(" ").length){
+                                canvas.drawText(text, 10, y, myPaint);
+                            }
+                        }
+                    }
+                    y = y + 25;
+                    canvas.drawText("YEMEK TARİFİ",10, y, boldPaint);
+                    y = y + 20;
+                    text ="";
+                    int t = 0;
+                    for(String ws2 : yemekTarifi.getText().toString().split(" ")) {
+                        t = t + 1;
+                        if ((text + ws2).length() > 60) {
+                            canvas.drawText(text, 10, y, myPaint);
+                            y = y + 20;
+                            text = ws2;
+                        } else {
+                            text = text + " " +  ws2;
+                            if(t == yemekTarifi.getText().toString().split(" ").length){
+                                canvas.drawText(text, 10, y, myPaint);
+                            }
+                        }
+                    }
+                    canvas.save();
+                    myPdfDocument.finishPage(myPage1);
+
+                    File file = new File(Environment.getExternalStorageDirectory(), yemekAdi.getText().toString().toUpperCase()+".pdf");
+                    try {
+                        myPdfDocument.writeTo(new FileOutputStream(file));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    myPdfDocument.close();
+                    // copy some things
+                } else {
+                    checkMermission();
+                }
+
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater =getMenuInflater();
+        inflater.inflate(R.menu.pdfmenu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_search_insides:
+                checkMermission();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

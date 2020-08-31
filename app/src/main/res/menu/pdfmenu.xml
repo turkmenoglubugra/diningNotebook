@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_search_insides"
+        android:enabled="true"
+        android:icon="@mipmap/pdf_round"
+        android:orderInCategory="300"
+        android:title="@android:string/search_go"
+        app:showAsAction="ifRoom" />
+
+</menu>
