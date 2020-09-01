@@ -116,12 +116,12 @@ public class yemekSilPage  extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 idBul = ids.get(position);
                     new SweetAlertDialog(yemekSilPage.this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("Emin Misiniz?")
-                            .setContentText("Kayıt geri getirilemeyecektir!")
-                            .setConfirmText("Evet, kaydı sil!")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
+                                        .setTitleText("Emin Misiniz?")
+                                        .setContentText("Kayıt geri getirilemeyecektir!")
+                                        .setConfirmText("Evet, kaydı sil!")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sDialog) {
                                     if(idBul == -1){
                                         sDialog
                                                 .setTitleText("Uyarı!")

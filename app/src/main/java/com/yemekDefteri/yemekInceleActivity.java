@@ -1,10 +1,7 @@
 package com.yemekDefteri;
 
 import android.Manifest;
-import android.app.ActionBar;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -14,10 +11,6 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.text.Layout;
-import android.text.StaticLayout;
-import android.text.TextPaint;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,12 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
-
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -41,9 +31,7 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -56,6 +44,7 @@ public class yemekInceleActivity extends AppCompatActivity {
     private int i = 0;
     private AdView mAdView;
     private AdView adView;
+    private File file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,12 +159,45 @@ public class yemekInceleActivity extends AppCompatActivity {
                     canvas.save();
                     myPdfDocument.finishPage(myPage1);
 
-                    File file = new File(Environment.getExternalStorageDirectory(), "/"+yemekAdi.getText().toString().toUpperCase()+".pdf");
+                    file = new File(Environment.getExternalStorageDirectory(), "/"+yemekAdi.getText().toString().toUpperCase()+".pdf");
                     try {
                         myPdfDocument.writeTo(new FileOutputStream(file));
                         myPdfDocument.close();
-                        new SweetAlertDialog(yemekInceleActivity.this)
-                                .setTitleText("Pdf başarıyla oluşturuldu.\n("+Environment.getExternalStorageDirectory()+"/"+yemekAdi.getText().toString().toUpperCase()+".pdf)")
+                        String path = Environment.getExternalStorageDirectory() + "/" + yemekAdi.getText().toString().toUpperCase() + ".pdf";
+                        new SweetAlertDialog(yemekInceleActivity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                .setTitleText("Pdf Oluşturuldu ("+path+")")
+                                .setContentText("Paylaşmak istiyor musunuz?")
+                                .setConfirmText("Evet, paylaş!")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        try {
+                                            if(file.exists()) {
+                                                Uri pdfUri = FileProvider.getUriForFile(
+                                                        yemekInceleActivity.this,
+                                                        "com.yemekDefteri.provider", //(use your app signature + ".provider" )
+                                                        file);
+
+                                                Intent intent = ShareCompat.IntentBuilder.from(yemekInceleActivity.this)
+                                                        .setType("application/pdf")
+                                                        .setStream(pdfUri)
+                                                        .setChooserTitle("Choose bar")
+                                                        .createChooserIntent()
+                                                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                                                startActivity(intent);
+                                            }
+                                        } catch (Exception e){
+                                            sDialog
+                                                    .setTitleText("Hata!")
+                                                    .setContentText("İşlem sırasında hata oluştu!")
+                                                    .setConfirmText("OK")
+                                                    .setConfirmClickListener(null)
+                                                    .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                        }
+
+                                    }
+                                })
                                 .show();
                     } catch (Exception e) {
                         e.printStackTrace();
