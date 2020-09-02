@@ -9,14 +9,11 @@
     android:orientation="vertical"
     tools:context="com.yemekDefteri.yeniYemekActivity">
 
-    <com.github.barteksc.pdfviewer.PDFView
-        android:id="@+id/pdfView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
     <ImageView
         android:id="@+id/yemekResmiImageView"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:background="@android:drawable/ic_menu_report_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,14 +24,17 @@
         android:id="@+id/yemekAdiTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0DED2"
+        android:background="#FFFF"
         android:text="YEMEK ADI"
         android:textAlignment="center"
+        android:textColor="#388E3C"
+        android:textSize="18dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/yemekResmiImageView"
+        app:layout_constraintBottom_toTopOf="@+id/yemekAdiText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/yemekAdiText"  />
+        app:layout_constraintTop_toBottomOf="@+id/yemekResmiImageView" />
 
     <EditText
         android:id="@+id/yemekAdiText"
@@ -43,6 +43,7 @@
         android:ellipsize="end"
         android:ems="10"
         android:hint="Buraya Yazabilirsiniz..."
+        android:background="@android:color/transparent"
         android:maxLines="1"
         android:scrollHorizontally="false"
         android:maxLength="25"
@@ -56,9 +57,11 @@
 
     <TextView
         android:id="@+id/malzemelerTextView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0DED2"
+        android:background="#FFFF"
+        android:textColor="#388E3C"
+        android:textSize="18dp"
         android:text="MALZEMELER"
         android:textAlignment="center"
         android:textStyle="bold"
@@ -87,7 +90,9 @@
         android:id="@+id/yemekTarifiTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0DED2"
+        android:background="#FFFF"
+        android:textColor="#388E3C"
+        android:textSize="18dp"
         android:text="YEMEK TARİFİ"
         android:textAlignment="center"
         android:textStyle="bold"
@@ -110,52 +115,21 @@
         app:layout_constraintTop_toBottomOf="@+id/yemekTarifiTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout" />
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/yemekTarifiText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/btnResim"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#D0DED2"
-            android:text="RESİM\n EKLE/SİL"/>
-
-        <Button
-            android:id="@+id/btnTemizle"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#D0DED2"
-            android:text="TEMİZLE"/>
-
-        <Button
-            android:id="@+id/btnYeniYemekEkle"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="10dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#D0DED2"
-            android:text="KAYDET"/>
-
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="ca-app-pub-2814589180123732/4676338611"></com.google.android.gms.ads.AdView>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

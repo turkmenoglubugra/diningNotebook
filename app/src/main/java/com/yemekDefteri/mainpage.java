@@ -69,14 +69,6 @@ public class mainpage extends AppCompatActivity {
             }
         });
 
-        yeniYemek = findViewById(R.id.btnYeniYemek);
-        yeniYemek.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                yemekEkleAc();
-            }
-        });
-
         yemekListesi = findViewById(R.id.btnYemekListesi);
         yemekListesi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,42 +76,10 @@ public class mainpage extends AppCompatActivity {
                 yemekListesiAc();
             }
         });
-
-        yemekSil = findViewById(R.id.btnYemekKaldir);
-        yemekSil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                yemekSilAc();
-            }
-        });
-
-        yemekDuzenle = findViewById(R.id.btnYemekDuzenle);
-        yemekDuzenle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                yemekDuzenleAc();
-            }
-        });
-
-
-    }
-
-    public void yemekEkleAc(){
-        Intent intent = new Intent(this, yeniYemekActivity.class );
-        startActivity(intent);
     }
 
     public void yemekListesiAc(){
         Intent intent = new Intent(this, yemekListePage.class );
-        startActivity(intent);
-    }
-    public void yemekSilAc(){
-        Intent intent = new Intent(this, yemekSilPage.class );
-        startActivity(intent);
-    }
-
-    public void yemekDuzenleAc(){
-        Intent intent = new Intent(this, yemekDuzenlePage.class );
         startActivity(intent);
     }
 

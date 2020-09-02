@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.yemekDefteri"
-    android:versionCode="6"
-    android:versionName="1.6">
+    android:versionCode="7"
+    android:versionName="1.7">
 
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -28,7 +28,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".mainpage"
+        <activity android:name=".yemekListePage"
             android:screenOrientation="portrait">
          <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -36,23 +36,10 @@
           </intent-filter>
         </activity>
         <activity android:name=".yeniYemekActivity"
-            android:label="Yeni Yemek Ekle"
+            android:label="Yemek Defteri"
             android:screenOrientation="portrait"/>
-        <activity android:name=".yemekListePage"
-            android:label="Yemek Listesi"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".yemekSilPage"
-            android:label="Yemek Sil"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".yemekInceleActivity"
-            android:label="Yemek İncele"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".yemekDuzenlePage"
-            android:label="Yemek Düzenle"
-            android:screenOrientation="portrait"
-           />
         <activity android:name=".guncelle"
-            android:label="Yemek Güncelle"
+            android:label="Yemek Defteri"
             android:screenOrientation="portrait"/>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -11,20 +11,23 @@
 
     <ImageView
         android:id="@+id/yemekResmiImageView"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:background="@android:drawable/ic_menu_report_image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/yemekAdiTextView"
-    />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/yemekAdiTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0DED2"
+        android:background="#FFFF"
+        android:textSize="18dp"
+        android:textColor="#388E3C"
         android:text="YEMEK ADI"
         android:textAlignment="center"
         android:textStyle="bold"
@@ -56,8 +59,10 @@
         android:id="@+id/malzemelerTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0DED2"
+        android:background="#FFFF"
+        android:textColor="#388E3C"
         android:text="MALZEMELER"
+        android:textSize="18dp"
         android:textAlignment="center"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/yemekAdiText"
@@ -84,7 +89,9 @@
         android:id="@+id/yemekTarifiTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D0DED2"
+        android:background="#FFFF"
+        android:textColor="#388E3C"
+        android:textSize="18dp"
         android:text="YEMEK TARİFİ"
         android:textAlignment="center"
         android:textStyle="bold"
@@ -98,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/textview_border"
-        android:hint="Buraya Yazabilirsiniz... (Max 750 Karakter)"
+        android:hint="Buraya Yazabilirsiniz... "
         android:inputType="textMultiLine"
         android:maxLength="750"
         android:scrollHorizontally="false"
@@ -107,55 +114,12 @@
         app:layout_constraintTop_toBottomOf="@+id/yemekTarifiTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"/>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="60dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/yemekTarifiText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-        >
-        <Button
-            android:id="@+id/btnResim"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#D0DED2"
-            android:layout_margin="10dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:text="RESİM\n EKLE/SİL" />
-        <Button
-            android:id="@+id/btnTemizle"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#D0DED2"
-            android:layout_margin="10dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:text="TEMİZLE"
-           />
-    <Button
-        android:id="@+id/btnYeniYemekGuncelle"
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/round"
-        android:backgroundTint="#D0DED2"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:text="GÜNCELLE" />
-    </LinearLayout>
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"/>
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/yemekTarifiText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -163,7 +127,7 @@
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:adSize="FULL_BANNER"
+            app:adSize="SMART_BANNER"
             app:adUnitId="ca-app-pub-2814589180123732/4676338611"></com.google.android.gms.ads.AdView>
 
     </LinearLayout>

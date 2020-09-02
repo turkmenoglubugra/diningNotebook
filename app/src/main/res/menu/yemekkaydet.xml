@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/yemekKaydetAction"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_save"
+        android:orderInCategory="300"
+        android:title="Kaydet"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/imageAction"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_report_image"
+        android:orderInCategory="300"
+        android:title="Resim Ekle/Sil"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/temizleAction"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:orderInCategory="300"
+        android:title="Temizle"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_search_insides"
+        android:enabled="true"
+        android:icon="@mipmap/pdf_round"
+        android:orderInCategory="300"
+        android:title="Pdf Oluştur"
+        app:showAsAction="ifRoom" />
+
+
+
+</menu>

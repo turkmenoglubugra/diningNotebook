@@ -6,10 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,9 +25,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
+
+import com.google.android.gms.ads.AdView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -48,12 +55,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class yeniYemekActivity  extends AppCompatActivity {
     private EditText yemekAdi, yemekTarifi, malzemeler = null;
     private ImageView yemekResmi;
-    private Button btnKaydet, btnTemizle,btnResim = null;
     private int GALLERY_REQUEST = 1;
     private Bitmap bitmap = null;
     private int i = 0;
     private InterstitialAd mInterstitialAd;
     private File file;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,28 +86,52 @@ public class yeniYemekActivity  extends AppCompatActivity {
 
         });
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete( InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
+
         yemekAdi = (EditText) findViewById(R.id.yemekAdiText);
         yemekTarifi = (EditText) findViewById(R.id.yemekTarifiText);
         malzemeler = (EditText) findViewById(R.id.malzemelerText);
-        btnKaydet = (Button) findViewById(R.id.btnYeniYemekEkle);
         yemekResmi = (ImageView) findViewById(R.id.yemekResmiImageView);
-        btnTemizle = (Button) findViewById(R.id.btnTemizle);
-        btnResim = (Button) findViewById(R.id.btnResim);
-        btnTemizle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SweetAlertDialog pDialog = new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("Temizleniyor ...");
-                pDialog.setCancelable(true);
-                pDialog.show();
-                yemekAdi.setText("");
-                malzemeler.setText("");
-                yemekTarifi.setText("");
-                yemekResmi.setImageBitmap(null);
-                pDialog.cancel();
-            }
-        });
         yemekResmi.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -113,9 +144,6 @@ public class yeniYemekActivity  extends AppCompatActivity {
                     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
                     layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     view.setLayoutParams(layoutParams);
-                    btnKaydet.setVisibility(View.INVISIBLE);
-                    btnResim.setVisibility(View.INVISIBLE);
-                    btnTemizle.setVisibility(View.INVISIBLE);
                     i = 1;
                 } else {
                     View view = findViewById(R.id.yemekResmiImageView);
@@ -124,91 +152,9 @@ public class yeniYemekActivity  extends AppCompatActivity {
                     layoutParams.height = 350;
                     view.setLayoutParams(layoutParams);
                     i = 0;
-                    btnKaydet.setVisibility(View.VISIBLE);
-                    btnResim.setVisibility(View.VISIBLE);
-                    btnTemizle.setVisibility(View.VISIBLE);
                 }
             }
         });
-
-        btnResim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
-                    yemekResmi.setImageBitmap(null);
-                } else {
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-                }
-
-            }
-        });
-
-        btnKaydet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Emin Misiniz?")
-                        .setContentText("Yemek kaydedilecektir!")
-                        .setConfirmText("Evet, Kaydet!")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                try{
-                                    String adi = yemekAdi.getText().toString().trim();
-                                    String malzeme = malzemeler.getText().toString().trim();
-                                    String tarif = yemekTarifi.getText().toString().trim();
-                                    byte[] data = null;
-                                    if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
-                                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-                                        data = outputStream.toByteArray();
-                                    }
-
-                                    if(adi.equals("")) {
-                                        sDialog
-                                                .setTitleText("Uyarı!")
-                                                .setContentText("Yemek adı alanı doldurulmalıdır!")
-                                                .setConfirmText("OK")
-                                                .setConfirmClickListener(null)
-                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                                        return;
-                                    } else {
-                                        Database vt = new Database(yeniYemekActivity.this);
-                                        vt.VeriEkle(adi, malzeme, tarif, data);
-                                        yemekAdi.setText("");
-                                        malzemeler.setText("");
-                                        yemekTarifi.setText("");
-                                        yemekResmi.setImageBitmap(null);
-                                        sDialog
-                                                .setTitleText("Başarılı!")
-                                                .setContentText("Yemek başarıyla kaydedildi!")
-                                                .setConfirmText("OK")
-                                                .setConfirmClickListener(null)
-                                                .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                        if (mInterstitialAd.isLoaded()) {
-                                            mInterstitialAd.show();
-                                        } else {
-                                            Log.d("TAG", "The interstitial wasn't loaded yet.");
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    sDialog
-                                            .setTitleText("Hata!")
-                                            .setContentText("Hata meydana geldi!")
-                                            .setConfirmText("OK")
-                                            .setConfirmClickListener(null)
-                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                                }
-                            }
-                        })
-                        .show();
-
-
-            }
-        });
-
     }
 
     @Override
@@ -232,8 +178,16 @@ public class yeniYemekActivity  extends AppCompatActivity {
                 bytes = output.toByteArray();
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 Bitmap circularBitmap = ImageConverter.getRoundedCornerBitmap(bitmap, 100);
+                if(circularBitmap.getWidth() > circularBitmap.getHeight()) {
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    circularBitmap = Bitmap.createBitmap(circularBitmap, 0, 0, circularBitmap.getWidth(), circularBitmap.getHeight(), matrix, true);
+                }
+                circularBitmap = getResizedBitmap(circularBitmap, 600);
                 yemekResmi.setImageBitmap(circularBitmap);
             } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -371,7 +325,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater =getMenuInflater();
-        inflater.inflate(R.menu.pdfmenu,menu);
+        inflater.inflate(R.menu.yemekkaydet,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -380,11 +334,105 @@ public class yeniYemekActivity  extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.imageAction:
+                if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
+                    yemekResmi.setImageBitmap(null);
+                } else {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                }
+                return true;
             case R.id.action_search_insides:
                 checkMermission();
                 return true;
+            case R.id.temizleAction:
+                SweetAlertDialog pDialog = new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("Temizleniyor ...");
+                pDialog.setCancelable(true);
+                pDialog.show();
+                yemekAdi.setText("");
+                malzemeler.setText("");
+                yemekTarifi.setText("");
+                yemekResmi.setImageBitmap(null);
+                pDialog.cancel();
+                return true;
+            case R.id.yemekKaydetAction:
+
+                new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Emin Misiniz?")
+                        .setContentText("Yemek kaydedilecektir!")
+                        .setConfirmText("Evet, Kaydet!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                try{
+                                    String adi = yemekAdi.getText().toString().trim();
+                                    String malzeme = malzemeler.getText().toString().trim();
+                                    String tarif = yemekTarifi.getText().toString().trim();
+                                    byte[] data = null;
+                                    if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
+                                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+                                        data = outputStream.toByteArray();
+                                    }
+
+                                    if(adi.equals("")) {
+                                        sDialog
+                                                .setTitleText("Uyarı!")
+                                                .setContentText("Yemek adı alanı doldurulmalıdır!")
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(null)
+                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                        return;
+                                    } else {
+                                        Database vt = new Database(yeniYemekActivity.this);
+                                        vt.VeriEkle(adi, malzeme, tarif, data);
+                                        yemekAdi.setText("");
+                                        malzemeler.setText("");
+                                        yemekTarifi.setText("");
+                                        yemekResmi.setImageBitmap(null);
+                                        listePage();
+                                        if (mInterstitialAd.isLoaded()) {
+                                            mInterstitialAd.show();
+                                        } else {
+                                            Log.d("TAG", "The interstitial wasn't loaded yet.");
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    sDialog
+                                            .setTitleText("Hata!")
+                                            .setContentText("Hata meydana geldi!")
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                }
+                            }
+                        })
+                        .show();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private void listePage(){
+        Intent intent = new Intent(this, yemekListePage.class );
+        startActivity(intent);
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 }

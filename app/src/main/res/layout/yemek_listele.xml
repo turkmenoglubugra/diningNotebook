@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_margin="10dp"
-    android:background="#D0DED2"
+    android:background="@drawable/b1"
     android:orientation="vertical"
     tools:context="com.yemekDefteri.yemekListePage">
 
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:listSelector="#79977D"
+        android:listSelector="#388E3C"
         android:background="#FFFFFF"></ListView>
 
 </LinearLayout>

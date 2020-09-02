@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,7 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +48,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class guncelle extends AppCompatActivity {
     private EditText yemekAdi, yemekTarifi,malzemeler = null;
-    private Button btnGuncelle, btnTemizle, btnResim = null;
     private int id;
     private ImageView yemekResmi;
     private int GALLERY_REQUEST = 1;
@@ -63,9 +62,16 @@ public class guncelle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yemek_guncelle);
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-2814589180123732/4578930417");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
@@ -122,37 +128,7 @@ public class guncelle extends AppCompatActivity {
         yemekAdi = (EditText) findViewById(R.id.yemekAdiText);
         yemekTarifi = (EditText) findViewById(R.id.yemekTarifiText);
         malzemeler = (EditText) findViewById(R.id.malzemelerText);
-        btnGuncelle = (Button) findViewById(R.id.btnYeniYemekGuncelle);
         yemekResmi = (ImageView) findViewById(R.id.yemekResmiImageView);
-        btnTemizle = (Button) findViewById(R.id.btnTemizle);
-        btnResim = (Button) findViewById(R.id.btnResim);
-        btnTemizle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SweetAlertDialog pDialog = new SweetAlertDialog(guncelle.this, SweetAlertDialog.PROGRESS_TYPE);
-                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("Temizleniyor ...");
-                pDialog.setCancelable(true);
-                pDialog.show();
-                yemekAdi.setText("");
-                malzemeler.setText("");
-                yemekTarifi.setText("");
-                yemekResmi.setImageBitmap(null);
-                pDialog.cancel();
-            }
-        });
-        btnResim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
-                    yemekResmi.setImageBitmap(null);
-                } else {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
-                }
-            }
-        });
         yemekResmi.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -189,65 +165,6 @@ public class guncelle extends AppCompatActivity {
                 yemekResmi.setImageBitmap(ws.getResim() == null ? null : BitmapFactory.decodeByteArray(ws.getResim(), 0, ws.getResim().length));
             }
         }
-
-        btnGuncelle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Emin Misiniz?")
-                        .setContentText("Kayıt güncellenecektir!")
-                        .setConfirmText("Evet, Güncelle!")
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                try{
-                    byte [] data = null;
-                    String adi = yemekAdi.getText().toString().trim();
-                    String malzeme = malzemeler.getText().toString().trim();
-                    String tarif = yemekTarifi.getText().toString().trim();
-                    if(((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null) {
-                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-                        data = outputStream.toByteArray();
-                    }
-                    if(adi.equals("")) {
-                        sDialog
-                                .setTitleText("Uyarı!")
-                                .setContentText("Yemek adı alanlanı doldurulmalıdır!")
-                                .setConfirmText("OK")
-                                .setConfirmClickListener(null)
-                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                        return;
-                    } else {
-                        Database vt = new Database(guncelle.this);
-                        vt.VeriDuzenle(id,adi ,malzeme, tarif,data);
-                    }
-                    sDialog
-                            .setTitleText("Başarılı!")
-                            .setContentText("Kayıt başarıyla güncellendi!")
-                            .setConfirmText("OK")
-                            .setConfirmClickListener(null)
-                            .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                    if (mInterstitialAd.isLoaded()) {
-                        mInterstitialAd.show();
-                    } else {
-                        Log.d("TAG", "The interstitial wasn't loaded yet.");
-                    }
-                } catch (Exception e) {
-                    sDialog
-                            .setTitleText("Hata!")
-                            .setContentText("İşlem sırasında hata oluştu!")
-                            .setConfirmText("OK")
-                            .setConfirmClickListener(null)
-                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                }
-
-                            }
-                        })
-                        .show();
-            }
-        });
-
     }
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
@@ -272,6 +189,11 @@ public class guncelle extends AppCompatActivity {
                 bytes = output.toByteArray();
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 Bitmap circularBitmap = ImageConverter.getRoundedCornerBitmap(bitmap, 100);
+                if(circularBitmap.getWidth() > circularBitmap.getHeight()) {
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    circularBitmap = Bitmap.createBitmap(circularBitmap, 0, 0, circularBitmap.getWidth(), circularBitmap.getHeight(), matrix, true);
+                }
                 yemekResmi.setImageBitmap(circularBitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -410,7 +332,7 @@ public class guncelle extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater =getMenuInflater();
-        inflater.inflate(R.menu.pdfmenu,menu);
+        inflater.inflate(R.menu.yemekguncelle,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -419,11 +341,116 @@ public class guncelle extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.yemekSilAction:
+                new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Emin Misiniz?")
+                        .setContentText("Kayıt geri getirilemeyecektir!")
+                        .setConfirmText("Evet, kaydı sil!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                try {
+                                    Database vt = new Database(guncelle.this);
+                                    vt.VeriSil(id);
+                                    //Sildikten Sonra tekrardan listeliyoruz
+                                    listePage();
+                                    if (mInterstitialAd.isLoaded()) {
+                                        mInterstitialAd.show();
+                                    } else {
+                                        Log.d("TAG", "The interstitial wasn't loaded yet.");
+                                    }
+                                } catch (Exception e){
+                                    sDialog
+                                            .setTitleText("Hata!")
+                                            .setContentText("İşlem sırasında hata oluştu!")
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                }
+
+                            }
+                        })
+                        .show();
+                return true;
+            case R.id.yemekKaydetAction:
+                new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Emin Misiniz?")
+                        .setContentText("Kayıt güncellenecektir!")
+                        .setConfirmText("Evet, Güncelle!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                try{
+                                    byte [] data = null;
+                                    String adi = yemekAdi.getText().toString().trim();
+                                    String malzeme = malzemeler.getText().toString().trim();
+                                    String tarif = yemekTarifi.getText().toString().trim();
+                                    if(((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null) {
+                                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+                                        data = outputStream.toByteArray();
+                                    }
+                                    if(adi.equals("")) {
+                                        sDialog
+                                                .setTitleText("Uyarı!")
+                                                .setContentText("Yemek adı alanlanı doldurulmalıdır!")
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(null)
+                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                        return;
+                                    } else {
+                                        Database vt = new Database(guncelle.this);
+                                        vt.VeriDuzenle(id,adi ,malzeme, tarif,data);
+                                    }
+                                    listePage();
+                                    if (mInterstitialAd.isLoaded()) {
+                                        mInterstitialAd.show();
+                                    } else {
+                                        Log.d("TAG", "The interstitial wasn't loaded yet.");
+                                    }
+                                } catch (Exception e) {
+                                    sDialog
+                                            .setTitleText("Hata!")
+                                            .setContentText("İşlem sırasında hata oluştu!")
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                }
+
+                            }
+                        })
+                        .show();
+                return true;
+            case R.id.imageAction:
+                if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
+                    yemekResmi.setImageBitmap(null);
+                } else {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                }
+                return true;
+            case R.id.temizleAction:
+                SweetAlertDialog pDialog = new SweetAlertDialog(guncelle.this, SweetAlertDialog.PROGRESS_TYPE);
+                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                pDialog.setTitleText("Temizleniyor ...");
+                pDialog.setCancelable(true);
+                pDialog.show();
+                yemekAdi.setText("");
+                malzemeler.setText("");
+                yemekTarifi.setText("");
+                yemekResmi.setImageBitmap(null);
+                pDialog.cancel();
+                return true;
             case R.id.action_search_insides:
                 checkMermission();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private void listePage(){
+        Intent intent = new Intent(this, yemekListePage.class );
+        startActivity(intent);
     }
 }

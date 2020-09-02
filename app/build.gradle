@@ -8,8 +8,8 @@ android {
         applicationId "com.yemekDefteri"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 6
-        versionName "1.6"
+        versionCode 7
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,6 +35,5 @@ dependencies {
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'com.google.android.gms:play-services-ads:19.1.0'
     implementation 'com.karumi:dexter:4.2.0'
-    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'androidx.appcompat:appcompat:1.1.0'
 }

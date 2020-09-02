@@ -5,6 +5,9 @@ import android.database.CursorWindow;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -111,9 +114,31 @@ public class yemekListePage  extends AppCompatActivity {
     }
 
     public void incele(int a0){
-        Intent myIntent = new Intent(this, yemekInceleActivity.class);
+        Intent myIntent = new Intent(this, guncelle.class);
         myIntent.putExtra("id", a0);
         startActivity(myIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater =getMenuInflater();
+        inflater.inflate(R.menu.yemekekle,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.yemekEkleAction:
+                Intent intent = new Intent(this, yeniYemekActivity.class );
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
