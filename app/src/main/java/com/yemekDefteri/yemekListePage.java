@@ -1,7 +1,12 @@
 package com.yemekDefteri;
 
+import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.database.CursorWindow;
+import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,17 +14,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.yemekDefteri.R;
-
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -50,7 +57,8 @@ public class yemekListePage  extends AppCompatActivity {
         arama.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start,
@@ -132,6 +140,37 @@ public class yemekListePage  extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.searchAction:
+                if(!arama.getText().toString().trim().equals("")){
+                    Uri uri = Uri.parse("https://www.google.com/search?q="+arama.getText().toString());
+                    Intent gSearchIntent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(gSearchIntent);
+                } else {
+                    new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Lütfen arama kutucuğunu doldurunuz!")
+                            .show();
+                }
+                return true;
+            case R.id.yemekTavsiyeAction:
+                try {
+                    final int min = 0;
+                    final int max = listTable.size()-1;
+                    final int random = new Random().nextInt((max - min) + 1) + min;
+                    new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                            .setCustomImage(R.mipmap.s_round)
+                            .setTitleText("Afiyet Olsun")
+                            .setContentText(listTable.get(random))
+                            .show();
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+            case R.id.temizleAction:
+                arama.setText("");
+                return true;
             case R.id.yemekEkleAction:
                 Intent intent = new Intent(this, yeniYemekActivity.class );
                 startActivity(intent);

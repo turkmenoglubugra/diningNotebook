@@ -6,7 +6,27 @@
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="300"
-        android:title="@android:string/search_go"
-        app:showAsAction="ifRoom" />
-
+        android:title="Yeni Yemek Ekle"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/searchAction"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="300"
+        android:title="İnternette Ara"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/temizleAction"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:orderInCategory="300"
+        android:title="Temizle"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/yemekTavsiyeAction"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:orderInCategory="300"
+        android:title="Yemek Tavsiye Et"
+        app:showAsAction="never" />
 </menu>
