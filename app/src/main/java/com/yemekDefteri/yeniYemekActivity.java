@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,6 +62,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     private File file;
     private AdView mAdView;
+    private TextView yemekAdiTextView, yemekTarifiTextView, malzemelerTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +130,21 @@ public class yeniYemekActivity  extends AppCompatActivity {
             }
         });
 
+        TextView textView = new TextView(this);
+        textView.setText(this.getResources().getString(R.string.ekranIsmi));
+
+        yemekAdiTextView = (TextView) findViewById(R.id.yemekAdiTextView);
+        yemekAdiTextView.setText(this.getResources().getString(R.string.yemekAdi));
+        malzemelerTextView = (TextView) findViewById(R.id.malzemelerTextView);
+        malzemelerTextView.setText(this.getResources().getString(R.string.malzemeler));
+        yemekTarifiTextView = (TextView) findViewById(R.id.yemekTarifiTextView);
+        yemekTarifiTextView.setText(this.getResources().getString(R.string.yemekTarifi));
         yemekAdi = (EditText) findViewById(R.id.yemekAdiText);
+        yemekAdi.setHint(this.getResources().getString(R.string.burayaYaz));
         yemekTarifi = (EditText) findViewById(R.id.yemekTarifiText);
+        yemekTarifi.setHint(this.getResources().getString(R.string.burayaYaz));
         malzemeler = (EditText) findViewById(R.id.malzemelerText);
+        malzemeler.setHint(this.getResources().getString(R.string.burayaYaz));
         yemekResmi = (ImageView) findViewById(R.id.yemekResmiImageView);
         yemekResmi.setOnClickListener(new View.OnClickListener() {
 
@@ -195,6 +209,17 @@ public class yeniYemekActivity  extends AppCompatActivity {
     }
 
     private void checkMermission() {
+        final String yemekAdiBosText = this.getResources().getString(R.string.yemekAdiBos);
+        final String malzemelerText = this.getResources().getString(R.string.malzemeler);
+        final String yemekTarifiText = this.getResources().getString(R.string.yemekTarifi);
+        final String pdfOlusturuldu = this.getResources().getString(R.string.pdfOlusturuldu);
+        final String paylasmakIstiyor = this.getResources().getString(R.string.paylasmakIstiyor);
+        final String evettPaylas = this.getResources().getString(R.string.evettPaylas);
+        final String hayir = this.getResources().getString(R.string.hayir);
+        final String evet = this.getResources().getString(R.string.evet);
+        final String hata = this.getResources().getString(R.string.hata);
+        final String error = this.getResources().getString(R.string.error);
+
         Dexter.withActivity(this)
                 .withPermissions(
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -210,7 +235,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
                     if(yemekAdi.getText().toString().trim().equals("")){
                         new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("Oops...")
-                                .setContentText("Yemek adı boş olamaz!")
+                                .setContentText(yemekAdiBosText)
                                 .show();
                         return;
 
@@ -223,11 +248,11 @@ public class yeniYemekActivity  extends AppCompatActivity {
                     Paint boldPaint = new Paint();
                     boldPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     int i = 0;
-                    PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(400, 650, 1).create();
+                    PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(400, 700, 1).create();
                     PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
                     Canvas canvas = myPage1.getCanvas();
                     canvas.drawText(yemekAdi.getText().toString().toUpperCase(), 10, 50, boldPaint);
-                    canvas.drawText("MALZEMELER", 10, 100, boldPaint);
+                    canvas.drawText(malzemelerText, 10, 100, boldPaint);
                     String text = "";
                     int y=125;
                     for(String ws : malzemeler.getText().toString().split(" ")) {
@@ -244,7 +269,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
                         }
                     }
                     y = y + 25;
-                    canvas.drawText("YEMEK TARİFİ",10, y, boldPaint);
+                    canvas.drawText(yemekTarifiText,10, y, boldPaint);
                     y = y + 20;
                     text ="";
                     int t = 0;
@@ -270,9 +295,9 @@ public class yeniYemekActivity  extends AppCompatActivity {
                         myPdfDocument.close();
                         String path = Environment.getExternalStorageDirectory() + "/" + yemekAdi.getText().toString().toUpperCase() + ".pdf";
                         new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Pdf Oluşturuldu ("+path+")")
-                                .setContentText("Paylaşmak istiyor musunuz?")
-                                .setConfirmText("Evet, paylaş!")
+                                .setTitleText(pdfOlusturuldu+" ("+path+")")
+                                .setContentText(paylasmakIstiyor)
+                                .setConfirmText(evettPaylas)
                                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sDialog) {
@@ -294,8 +319,8 @@ public class yeniYemekActivity  extends AppCompatActivity {
                                             }
                                         } catch (Exception e){
                                             sDialog
-                                                    .setTitleText("Hata!")
-                                                    .setContentText("İşlem sırasında hata oluştu!")
+                                                    .setTitleText(hata)
+                                                    .setContentText(error)
                                                     .setConfirmText("OK")
                                                     .setConfirmClickListener(null)
                                                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -332,7 +357,6 @@ public class yeniYemekActivity  extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.imageAction:
                 if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
@@ -349,7 +373,7 @@ public class yeniYemekActivity  extends AppCompatActivity {
             case R.id.temizleAction:
                 SweetAlertDialog pDialog = new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                 pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("Temizleniyor ...");
+                pDialog.setTitleText(this.getResources().getString(R.string.temizleniyor));
                 pDialog.setCancelable(true);
                 pDialog.show();
                 yemekAdi.setText("");
@@ -359,11 +383,15 @@ public class yeniYemekActivity  extends AppCompatActivity {
                 pDialog.cancel();
                 return true;
             case R.id.yemekKaydetAction:
+                final String uyari = this.getResources().getString(R.string.uyari);
+                final String yemekAlan = this.getResources().getString(R.string.yemekAlan);
+                final String hata = this.getResources().getString(R.string.hata);
+                final String error = this.getResources().getString(R.string.error);
 
                 new SweetAlertDialog(yeniYemekActivity.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Emin Misiniz?")
-                        .setContentText("Yemek kaydedilecektir!")
-                        .setConfirmText("Evet, Kaydet!")
+                        .setTitleText(this.getResources().getString(R.string.emin))
+                        .setContentText(this.getResources().getString(R.string.yemekKaydet))
+                        .setConfirmText(this.getResources().getString(R.string.evetKaydet))
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
@@ -380,8 +408,8 @@ public class yeniYemekActivity  extends AppCompatActivity {
 
                                     if(adi.equals("")) {
                                         sDialog
-                                                .setTitleText("Uyarı!")
-                                                .setContentText("Yemek adı alanı doldurulmalıdır!")
+                                                .setTitleText(uyari)
+                                                .setContentText(yemekAlan)
                                                 .setConfirmText("OK")
                                                 .setConfirmClickListener(null)
                                                 .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -402,8 +430,8 @@ public class yeniYemekActivity  extends AppCompatActivity {
                                     }
                                 } catch (Exception e) {
                                     sDialog
-                                            .setTitleText("Hata!")
-                                            .setContentText("Hata meydana geldi!")
+                                            .setTitleText(hata)
+                                            .setContentText(error)
                                             .setConfirmText("OK")
                                             .setConfirmClickListener(null)
                                             .changeAlertType(SweetAlertDialog.ERROR_TYPE);

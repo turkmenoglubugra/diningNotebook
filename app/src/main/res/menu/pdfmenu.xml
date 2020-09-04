@@ -6,7 +6,7 @@
         android:enabled="true"
         android:icon="@mipmap/pdf_round"
         android:orderInCategory="300"
-        android:title="@android:string/search_go"
+        android:title="@string/pdfOlustur"
         app:showAsAction="ifRoom" />
 
 </menu>

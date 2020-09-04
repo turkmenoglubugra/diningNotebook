@@ -22,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
@@ -56,6 +58,7 @@ public class guncelle extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     private AdView mAdView;
     private File file;
+    private TextView yemekAdiTextView, yemekTarifiTextView, malzemelerTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +128,18 @@ public class guncelle extends AppCompatActivity {
             }
         });
 
+        yemekAdiTextView = (TextView) findViewById(R.id.yemekAdiTextView);
+        yemekAdiTextView.setText(this.getResources().getString(R.string.yemekAdi));
+        malzemelerTextView = (TextView) findViewById(R.id.malzemelerTextView);
+        malzemelerTextView.setText(this.getResources().getString(R.string.malzemeler));
+        yemekTarifiTextView = (TextView) findViewById(R.id.yemekTarifiTextView);
+        yemekTarifiTextView.setText(this.getResources().getString(R.string.yemekTarifi));
         yemekAdi = (EditText) findViewById(R.id.yemekAdiText);
+        yemekAdi.setHint(this.getResources().getString(R.string.burayaYaz));
         yemekTarifi = (EditText) findViewById(R.id.yemekTarifiText);
+        yemekTarifi.setHint(this.getResources().getString(R.string.burayaYaz));
         malzemeler = (EditText) findViewById(R.id.malzemelerText);
+        malzemeler.setHint(this.getResources().getString(R.string.burayaYaz));
         yemekResmi = (ImageView) findViewById(R.id.yemekResmiImageView);
         yemekResmi.setOnClickListener(new View.OnClickListener() {
 
@@ -203,6 +215,17 @@ public class guncelle extends AppCompatActivity {
     }
 
     private void checkMermission() {
+        final String yemekAdiBos = this.getResources().getString(R.string.yemekAdiBos);
+        final String malzemelerTextView = this.getResources().getString(R.string.malzemeler);
+        final String yemekTarifiTextView = this.getResources().getString(R.string.yemekTarifi);
+        final String yemekAdiTextView = this.getResources().getString(R.string.yemekAdi);
+        final String pdfOlusturuldu = this.getResources().getString(R.string.pdfOlusturuldu);
+        final String paylasmakIstiyor = this.getResources().getString(R.string.paylasmakIstiyor);
+        final String evettPaylas = this.getResources().getString(R.string.evettPaylas);
+        final String hayir = this.getResources().getString(R.string.hayir);
+        final String evet = this.getResources().getString(R.string.evet);
+        final String hata = this.getResources().getString(R.string.hata);
+        final String error = this.getResources().getString(R.string.error);
         Dexter.withActivity(this)
                 .withPermissions(
                         android.Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -218,7 +241,7 @@ public class guncelle extends AppCompatActivity {
                     if(yemekAdi.getText().toString().trim().equals("")){
                         new SweetAlertDialog(guncelle.this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("Oops...")
-                                .setContentText("Yemek adı boş olamaz!")
+                                .setContentText(yemekAdiBos)
                                 .show();
                         return;
                     }
@@ -230,11 +253,11 @@ public class guncelle extends AppCompatActivity {
                     Paint boldPaint = new Paint();
                     boldPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     int i = 0;
-                    PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(400, 650, 1).create();
+                    PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(400, 700, 1).create();
                     PdfDocument.Page myPage1 = myPdfDocument.startPage(myPageInfo1);
                     Canvas canvas = myPage1.getCanvas();
                     canvas.drawText(yemekAdi.getText().toString().toUpperCase(), 10, 50, boldPaint);
-                    canvas.drawText("MALZEMELER", 10, 100, boldPaint);
+                    canvas.drawText(malzemelerTextView, 10, 100, boldPaint);
                     String text = "";
                     int y=125;
                     for(String ws : malzemeler.getText().toString().split(" ")) {
@@ -251,7 +274,7 @@ public class guncelle extends AppCompatActivity {
                         }
                     }
                     y = y + 25;
-                    canvas.drawText("YEMEK TARİFİ",10, y, boldPaint);
+                    canvas.drawText(yemekTarifiTextView,10, y, boldPaint);
                     y = y + 20;
                     text ="";
                     int t = 0;
@@ -277,9 +300,9 @@ public class guncelle extends AppCompatActivity {
                         myPdfDocument.close();
                         String path = Environment.getExternalStorageDirectory() + "/" + yemekAdi.getText().toString().toUpperCase() + ".pdf";
                         new SweetAlertDialog(guncelle.this, SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Pdf Oluşturuldu ("+path+")")
-                                .setContentText("Paylaşmak istiyor musunuz?")
-                                .setConfirmText("Evet, paylaş!")
+                                .setTitleText(pdfOlusturuldu+" ("+path+")")
+                                .setContentText(paylasmakIstiyor)
+                                .setConfirmText(evettPaylas)
                                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sDialog) {
@@ -301,8 +324,8 @@ public class guncelle extends AppCompatActivity {
                                             }
                                         } catch (Exception e){
                                             sDialog
-                                                    .setTitleText("Hata!")
-                                                    .setContentText("İşlem sırasında hata oluştu!")
+                                                    .setTitleText(hata)
+                                                    .setContentText(error)
                                                     .setConfirmText("OK")
                                                     .setConfirmClickListener(null)
                                                     .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -339,13 +362,17 @@ public class guncelle extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        final String uyari = this.getResources().getString(R.string.uyari);
+        final String yemekAlan = this.getResources().getString(R.string.yemekAlan);
+        final String hata = this.getResources().getString(R.string.hata);
+        final String error = this.getResources().getString(R.string.error);
 
         switch (item.getItemId()) {
             case R.id.yemekSilAction:
                 new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Emin Misiniz?")
-                        .setContentText("Kayıt geri getirilemeyecektir!")
-                        .setConfirmText("Evet, kaydı sil!")
+                        .setTitleText(this.getResources().getString(R.string.emin))
+                        .setContentText(this.getResources().getString(R.string.kayitGeri))
+                        .setConfirmText(this.getResources().getString(R.string.evetSil))
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
@@ -361,8 +388,8 @@ public class guncelle extends AppCompatActivity {
                                     }
                                 } catch (Exception e){
                                     sDialog
-                                            .setTitleText("Hata!")
-                                            .setContentText("İşlem sırasında hata oluştu!")
+                                            .setTitleText(hata)
+                                            .setContentText(error)
                                             .setConfirmText("OK")
                                             .setConfirmClickListener(null)
                                             .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -374,9 +401,9 @@ public class guncelle extends AppCompatActivity {
                 return true;
             case R.id.yemekKaydetAction:
                 new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("Emin Misiniz?")
-                        .setContentText("Kayıt güncellenecektir!")
-                        .setConfirmText("Evet, Güncelle!")
+                        .setTitleText(this.getResources().getString(R.string.emin))
+                        .setContentText(this.getResources().getString(R.string.kayitGuncelle))
+                        .setConfirmText(this.getResources().getString(R.string.evetGuncelle))
                         .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
@@ -392,8 +419,8 @@ public class guncelle extends AppCompatActivity {
                                     }
                                     if(adi.equals("")) {
                                         sDialog
-                                                .setTitleText("Uyarı!")
-                                                .setContentText("Yemek adı alanlanı doldurulmalıdır!")
+                                                .setTitleText(uyari)
+                                                .setContentText(yemekAlan)
                                                 .setConfirmText("OK")
                                                 .setConfirmClickListener(null)
                                                 .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -410,8 +437,8 @@ public class guncelle extends AppCompatActivity {
                                     }
                                 } catch (Exception e) {
                                     sDialog
-                                            .setTitleText("Hata!")
-                                            .setContentText("İşlem sırasında hata oluştu!")
+                                            .setTitleText(hata)
+                                            .setContentText(error)
                                             .setConfirmText("OK")
                                             .setConfirmClickListener(null)
                                             .changeAlertType(SweetAlertDialog.ERROR_TYPE);
@@ -431,16 +458,10 @@ public class guncelle extends AppCompatActivity {
                 }
                 return true;
             case R.id.temizleAction:
-                SweetAlertDialog pDialog = new SweetAlertDialog(guncelle.this, SweetAlertDialog.PROGRESS_TYPE);
-                pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                pDialog.setTitleText("Temizleniyor ...");
-                pDialog.setCancelable(true);
-                pDialog.show();
                 yemekAdi.setText("");
                 malzemeler.setText("");
                 yemekTarifi.setText("");
                 yemekResmi.setImageBitmap(null);
-                pDialog.cancel();
                 return true;
             case R.id.action_search_insides:
                 checkMermission();

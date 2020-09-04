@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Yemek Defteri</string>
+    <string name="yemekAdiAra">Yemek Adı Arayabilirsiniz</string>
+    <string name="listedenSec">Lütfen listeden bir kayıt seçiniz!</string>
+    <string name="afiyetOlsun">Afiyet olsun</string>
+    <string name="aramaKutucu">Lütfen arama kutucuğunu doldurunuz</string>
+    <string name="yemekAdiBos">Yemek adı boş olamaz</string>
+    <string name="malzemeler">Malzemeler</string>
+    <string name="yemekTarifi">Yemek Tarifi</string>
+    <string name="pdfOlusturuldu">Pdf oluşturuldu</string>
+    <string name="paylasmakIstiyor">Paylaşmak istiyor musunuz</string>
+    <string name="evettPaylas">Evet, paylaş!</string>
+    <string name="hayir">Hayır</string>
+    <string name="evet">Evet</string>
+    <string name="hata">Hata</string>
+    <string name="error">İşlem sırasında hata oluştu</string>
+    <string name="temizleniyor">Temizleniyor...</string>
+    <string name="emin">Emin misiniz?</string>
+    <string name="yemekKaydet">Yemek kaydedilecektir?</string>
+    <string name="evetKaydet">Evet, kaydet!</string>
+    <string name="uyari">Uyarı</string>
+    <string name="yemekAlan">"Yemek adı alanı doldurulmalıdır!</string>
+    <string name="yemekAdi">Yemek Adı</string>
+    <string name="burayaYaz">Buraya yazabilirsiniz...</string>
+    <string name="ekranIsmi">Yemek Defteri</string>
+    <string name="pdfOlustur">Pdf oluştur</string>
+    <string name="temizle">Temizle</string>
+    <string name="yemekTavsiyeEt">Yemek Tavsiye Et</string>
+    <string name="resimEkleSil">Resim Ekle/Sil</string>
+    <string name="kayitGeri">Kayıt geri getirilemeyecektir</string>
+    <string name="evetSil">Evet, kaydı sil!</string>
+    <string name="kayitGuncelle">Kayıt güncellenecektir!</string>
+    <string name="evetGuncelle">Evet, Güncelle!</string>
+
+</resources>

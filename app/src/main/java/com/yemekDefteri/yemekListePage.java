@@ -19,6 +19,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -42,7 +44,8 @@ public class yemekListePage  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yemek_listele);
-
+        TextView textView = new TextView(this);
+        textView.setText(this.getResources().getString(R.string.app_name));
 
         try {
             Field field = CursorWindow.class.getDeclaredField("sCursorWindowSize");
@@ -53,7 +56,7 @@ public class yemekListePage  extends AppCompatActivity {
         }
         veriListele = (ListView) findViewById(R.id.yemekListe);
         arama = (EditText) findViewById(R.id.aramaText);
-
+        arama.setHint(this.getResources().getString(R.string.yemekAdiAra));
         arama.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -91,14 +94,16 @@ public class yemekListePage  extends AppCompatActivity {
                 idBul = -1;
             }
         });
+        final String a = this.getResources().getString(R.string.listedenSec);
         veriListele.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 idBul = position;
+
                     if(idBul == -1){
                         new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.ERROR_TYPE)
                                 .setTitleText("Oops...")
-                                .setContentText("Lütfen listeden bir kayıt seçiniz!")
+                                .setContentText(a)
                                 .show();
                         return;
                     }
@@ -148,7 +153,7 @@ public class yemekListePage  extends AppCompatActivity {
                 } else {
                     new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Oops...")
-                            .setContentText("Lütfen arama kutucuğunu doldurunuz!")
+                            .setContentText(this.getResources().getString(R.string.aramaKutucu))
                             .show();
                 }
                 return true;
@@ -159,7 +164,7 @@ public class yemekListePage  extends AppCompatActivity {
                     final int random = new Random().nextInt((max - min) + 1) + min;
                     new SweetAlertDialog(yemekListePage.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
                             .setCustomImage(R.mipmap.s_round)
-                            .setTitleText("Afiyet Olsun")
+                            .setTitleText(this.getResources().getString(R.string.afiyetOlsun))
                             .setContentText(listTable.get(random))
                             .show();
 

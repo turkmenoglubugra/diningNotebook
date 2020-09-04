@@ -1,3 +1,34 @@
 <resources>
-    <string name="app_name">Yemek Defteri</string>
+    <string name="app_name">Dining Notebook</string>
+    <string name="yemekAdiAra">You can search for a food name</string>
+    <string name="listedenSec">Please select an entry from the list</string>
+    <string name="afiyetOlsun">Enjoy your meal</string>
+    <string name="aramaKutucu">Please fill the search box</string>
+    <string name="yemekAdiBos">Meal name cannot be empty</string>
+    <string name="malzemeler">Ingredients</string>
+    <string name="yemekTarifi">Recipe</string>
+    <string name="pdfOlusturuldu">Pdf created</string>
+    <string name="paylasmakIstiyor">Do you want to share?</string>
+    <string name="evettPaylas">Yes, share!</string>
+    <string name="hayir">No</string>
+    <string name="evet">Yes</string>
+    <string name="hata">Error</string>
+    <string name="error">An error occurred!</string>
+    <string name="temizleniyor">Cleaning up...</string>
+    <string name="emin">Are you sure?</string>
+    <string name="yemekKaydet">The meal will be saved?</string>
+    <string name="evetKaydet">Yes, save!</string>
+    <string name="uyari">Warning</string>
+    <string name="yemekAlan">Meal name field must be filled!</string>
+    <string name="yemekAdi">Meal Name</string>
+    <string name="burayaYaz">You can write here...</string>
+    <string name="ekranIsmi">Dining Notebook</string>
+    <string name="pdfOlustur">Create pdf</string>
+    <string name="temizle">Clean</string>
+    <string name="yemekTavsiyeEt">Recommend Meal</string>
+    <string name="resimEkleSil">Image Add/Remove</string>
+    <string name="kayitGeri">The record cannot be restored </string>
+    <string name="evetSil">Yes, delete the record!</string>
+    <string name="kayitGuncelle">The record will be updated!</string>
+    <string name="evetGuncelle">Yes, update!</string>
 </resources>
