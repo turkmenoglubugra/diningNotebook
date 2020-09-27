@@ -31,4 +31,12 @@
     <string name="evetSil">Yes, delete the record!</string>
     <string name="kayitGuncelle">The record will be updated!</string>
     <string name="evetGuncelle">Yes, update!</string>
+    <string name="kategoriEkle">Add Category</string>
+    <string name="kategoriVar">Category Already Exists</string>
+    <string name="kategoriSil">Delete Category</string>
+    <string name="kategoriSecilmeli">Category must be selected!</string>
+    <string name="kategoriIliski">There are recipes depending on the category to be deleted!!</string>
+    <string name="kategoriYazilmalı">Category must be written!</string>
+
+
 </resources>

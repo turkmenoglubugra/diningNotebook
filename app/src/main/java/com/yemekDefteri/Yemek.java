@@ -4,9 +4,18 @@ public class Yemek {
     private int id;
     private String yemekAdi;
     private String tarif;
+    private  int kategori;
 
     public String getMalzeme() {
         return malzeme;
+    }
+
+    public int getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(int kategori) {
+        this.kategori = kategori;
     }
 
     public void setMalzeme(String malzeme) {
@@ -31,12 +40,13 @@ public class Yemek {
         this.yemekAdi = yemekAdi;
     }
 
-    public Yemek(int id, String yemekAdi, String malzeme, String tarif, byte[] resim) {
+    public Yemek(int id, String yemekAdi, String malzeme, String tarif, byte[] resim, int kategori) {
         this.id = id;
         this.yemekAdi = yemekAdi;
         this.tarif = tarif;
         this.malzeme = malzeme;
         this.resim = resim;
+        this.kategori = kategori;
     }
 
     public String getTarif() {

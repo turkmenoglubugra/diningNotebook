@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/kategoriEkle"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:orderInCategory="300"
+        android:title="@string/kategoriEkle"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/yemekEkleAction"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_add"
@@ -21,6 +29,13 @@
         android:icon="@android:drawable/ic_menu_revert"
         android:orderInCategory="300"
         android:title="@string/temizle"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/kategoriSil"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:orderInCategory="300"
+        android:title="@string/kategoriSil"
         app:showAsAction="never" />
     <item
         android:id="@+id/yemekTavsiyeAction"

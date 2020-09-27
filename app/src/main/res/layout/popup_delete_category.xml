@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="15dp"
+            android:hint="Category"
+            >
+
+            <AutoCompleteTextView
+                android:id="@+id/edtCmpDeleteCategory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minWidth="200dp"
+                android:background="#FFFF"
+                android:backgroundTint="#FFFF"
+                android:shadowColor="#FFFF"
+                android:outlineAmbientShadowColor="#FFFF"
+                android:outlineSpotShadowColor="#FFFF"
+                android:editable="false"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </TableRow>
+
+    <TableRow android:gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        >
+
+        <Button
+            android:id="@+id/button_cancel_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:textSize="20dp"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="20dp"/>
+
+
+        <Button
+            android:id="@+id/button_delete_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:textSize="20dp"
+            android:textAllCaps="false"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="20dp"/>
+
+    </TableRow>
+
+</TableLayout>

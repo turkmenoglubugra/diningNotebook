@@ -1,6 +1,7 @@
 package com.yemekDefteri;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,15 +16,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
@@ -40,6 +48,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -59,11 +68,29 @@ public class guncelle extends AppCompatActivity {
     private AdView mAdView;
     private File file;
     private TextView yemekAdiTextView, yemekTarifiTextView, malzemelerTextView;
+    private AlertDialog.Builder alertDialogBuilderSaveYemek;
+    private View popupInputDialogSaveYemek;
+    private AlertDialog alertDialogAddYemek;
+    private Button button_cancel_category,button_save_category;
+    private AutoCompleteTextView edtCmpSaveCategory;
+    private int positionSaveCat=-1;
+    private String selection="";
+    private List<Kategori> listCategory = new ArrayList<Kategori>();
+    private List<String> listCategoryStr = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.yemek_guncelle);
+
+        LayoutInflater layoutInflaterYeniYemek = LayoutInflater.from(guncelle.this);
+        popupInputDialogSaveYemek = layoutInflaterYeniYemek.inflate(R.layout.popup_input_dialog, null);
+        alertDialogBuilderSaveYemek = new AlertDialog.Builder(guncelle.this);
+
+        alertDialogBuilderSaveYemek.setTitle(getResources().getString(R.string.kategoriEkle));
+        alertDialogBuilderSaveYemek.setCancelable(false);
+        alertDialogBuilderSaveYemek.setView(popupInputDialogSaveYemek);
+        alertDialogAddYemek = alertDialogBuilderSaveYemek.create();
 
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -128,6 +155,113 @@ public class guncelle extends AppCompatActivity {
             }
         });
 
+        button_cancel_category = popupInputDialogSaveYemek.findViewById(R.id.button_cancel_category);
+        button_save_category = popupInputDialogSaveYemek.findViewById(R.id.button_save_category);
+        edtCmpSaveCategory = popupInputDialogSaveYemek.findViewById(R.id.edtCmpSaveCategory);
+
+        edtCmpSaveCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+                selection = (String)parent.getItemAtPosition(position);
+                positionSaveCat = position;
+            }
+        });
+
+        button_cancel_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edtCmpSaveCategory.setSelection(0);
+                edtCmpSaveCategory.setText("");
+                alertDialogAddYemek.cancel();
+                selection = "";
+                positionSaveCat = -1;
+            }
+        });
+
+        button_save_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (positionSaveCat == -1) {
+                    new SweetAlertDialog(guncelle.this, SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("Oops...")
+                            .setContentText("Category Must Be Selected!")
+                            .show();
+                    return;
+                }
+                final String uyari = getResources().getString(R.string.uyari);
+                final String yemekAlan = getResources().getString(R.string.yemekAlan);
+                final String hata = getResources().getString(R.string.hata);
+                final String error = getResources().getString(R.string.error);
+                new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText(getResources().getString(R.string.emin))
+                        .setContentText(getResources().getString(R.string.kayitGuncelle))
+                        .setConfirmText(getResources().getString(R.string.evetGuncelle))
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                try{
+                                    byte [] data = null;
+                                    String adi = yemekAdi.getText().toString().trim();
+                                    String malzeme = malzemeler.getText().toString().trim();
+                                    String tarif = yemekTarifi.getText().toString().trim();
+                                    if(((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null) {
+                                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+                                        data = outputStream.toByteArray();
+                                    }
+                                    if(adi.equals("")) {
+                                        sDialog
+                                                .setTitleText(uyari)
+                                                .setContentText(yemekAlan)
+                                                .setConfirmText("OK")
+                                                .setConfirmClickListener(null)
+                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                        edtCmpSaveCategory.setSelection(0);
+                                        edtCmpSaveCategory.setText("");
+                                        alertDialogAddYemek.cancel();
+                                        selection = "";
+                                        positionSaveCat = -1;
+                                        return;
+                                    } else {
+                                        Database vt = new Database(guncelle.this);
+                                        int idCategory = 0;
+                                        for(Kategori cat : listCategory){
+                                            if(cat.getName().trim().equals(selection.trim())){
+                                                idCategory = cat.getId();
+                                            }
+                                        }
+                                        vt.VeriDuzenle(id,adi ,malzeme, tarif,data,idCategory);
+                                    }
+                                    listePage();
+                                    if (mInterstitialAd.isLoaded()) {
+                                        mInterstitialAd.show();
+                                    } else {
+                                        Log.d("TAG", "The interstitial wasn't loaded yet.");
+                                    }
+                                    edtCmpSaveCategory.setSelection(0);
+                                    edtCmpSaveCategory.setText("");
+                                    alertDialogAddYemek.cancel();
+                                    selection = "";
+                                    positionSaveCat = -1;
+                                } catch (Exception e) {
+                                    sDialog
+                                            .setTitleText(hata)
+                                            .setContentText(error)
+                                            .setConfirmText("OK")
+                                            .setConfirmClickListener(null)
+                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                    edtCmpSaveCategory.setSelection(0);
+                                    edtCmpSaveCategory.setText("");
+                                    alertDialogAddYemek.cancel();
+                                    selection = "";
+                                    positionSaveCat = -1;
+                                }
+
+                            }
+                        })
+                        .show();
+            }
+        });
+
         yemekAdiTextView = (TextView) findViewById(R.id.yemekAdiTextView);
         yemekAdiTextView.setText(this.getResources().getString(R.string.yemekAdi));
         malzemelerTextView = (TextView) findViewById(R.id.malzemelerTextView);
@@ -177,7 +311,46 @@ public class guncelle extends AppCompatActivity {
                 yemekResmi.setImageBitmap(ws.getResim() == null ? null : BitmapFactory.decodeByteArray(ws.getResim(), 0, ws.getResim().length));
             }
         }
+        listele();
     }
+
+    private void closeKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(this.getCurrentFocus() != null){
+            inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }    }
+    private void listele(){
+        Database vt = new Database(guncelle.this);
+        listCategory = vt.VeriListeleKategori();
+        if(listCategory.size() == 0){
+            vt.VeriEkleKategori("SOUP","EN");
+            vt.VeriEkleKategori("MAIN DISH","EN");
+            vt.VeriEkleKategori("DESSERT","EN");
+            vt.VeriEkleKategori("SALAD","EN");
+            vt.VeriEkleKategori("ENTREE STARTER","EN");
+            vt.VeriEkleKategori("ÇORBA","TR");
+            vt.VeriEkleKategori("ANA YEMEK","TR");
+            vt.VeriEkleKategori("TATLI","TR");
+            vt.VeriEkleKategori("SALATA","TR");
+            vt.VeriEkleKategori("ARA SICAK","TR");
+            listCategory = vt.VeriListeleKategori();
+            listCategoryStr = new ArrayList<String>();
+            for(Kategori cur : listCategory){
+                listCategoryStr.add(cur.getName());
+            }
+        } else {
+            listCategoryStr = new ArrayList<String>();
+            for(Kategori cur : listCategory){
+                listCategoryStr.add(cur.getName());
+            }
+        }
+        String[] stockArr = new String[listCategory.size()];
+        stockArr = listCategoryStr.toArray(stockArr);
+
+        ArrayAdapter<String> adapterCurrency = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, stockArr);
+        edtCmpSaveCategory.setAdapter(adapterCurrency);
+    }
+
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
@@ -369,6 +542,7 @@ public class guncelle extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.yemekSilAction:
+                closeKeyboard();
                 new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText(this.getResources().getString(R.string.emin))
                         .setContentText(this.getResources().getString(R.string.kayitGeri))
@@ -400,55 +574,11 @@ public class guncelle extends AppCompatActivity {
                         .show();
                 return true;
             case R.id.yemekKaydetAction:
-                new SweetAlertDialog(guncelle.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText(this.getResources().getString(R.string.emin))
-                        .setContentText(this.getResources().getString(R.string.kayitGuncelle))
-                        .setConfirmText(this.getResources().getString(R.string.evetGuncelle))
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sDialog) {
-                                try{
-                                    byte [] data = null;
-                                    String adi = yemekAdi.getText().toString().trim();
-                                    String malzeme = malzemeler.getText().toString().trim();
-                                    String tarif = yemekTarifi.getText().toString().trim();
-                                    if(((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null) {
-                                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                        ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-                                        data = outputStream.toByteArray();
-                                    }
-                                    if(adi.equals("")) {
-                                        sDialog
-                                                .setTitleText(uyari)
-                                                .setContentText(yemekAlan)
-                                                .setConfirmText("OK")
-                                                .setConfirmClickListener(null)
-                                                .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                                        return;
-                                    } else {
-                                        Database vt = new Database(guncelle.this);
-                                        vt.VeriDuzenle(id,adi ,malzeme, tarif,data);
-                                    }
-                                    listePage();
-                                    if (mInterstitialAd.isLoaded()) {
-                                        mInterstitialAd.show();
-                                    } else {
-                                        Log.d("TAG", "The interstitial wasn't loaded yet.");
-                                    }
-                                } catch (Exception e) {
-                                    sDialog
-                                            .setTitleText(hata)
-                                            .setContentText(error)
-                                            .setConfirmText("OK")
-                                            .setConfirmClickListener(null)
-                                            .changeAlertType(SweetAlertDialog.ERROR_TYPE);
-                                }
-
-                            }
-                        })
-                        .show();
+                closeKeyboard();
+                alertDialogAddYemek.show();
                 return true;
             case R.id.imageAction:
+                closeKeyboard();
                 if((yemekResmi.getDrawable())!= null && ((BitmapDrawable)yemekResmi.getDrawable()).getBitmap() != null)  {
                     yemekResmi.setImageBitmap(null);
                 } else {
@@ -458,6 +588,7 @@ public class guncelle extends AppCompatActivity {
                 }
                 return true;
             case R.id.temizleAction:
+                closeKeyboard();
                 yemekAdi.setText("");
                 malzemeler.setText("");
                 yemekTarifi.setText("");

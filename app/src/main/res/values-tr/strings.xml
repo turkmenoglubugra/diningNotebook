@@ -31,5 +31,10 @@
     <string name="evetSil">Evet, kaydı sil!</string>
     <string name="kayitGuncelle">Kayıt güncellenecektir!</string>
     <string name="evetGuncelle">Evet, Güncelle!</string>
-
+    <string name="kategoriEkle">Kategori Ekle</string>
+    <string name="kategoriVar">Kategori Zaten Bulunmaktadır</string>
+    <string name="kategoriSil">Kategori Sil</string>
+    <string name="kategoriSecilmeli">Kategori Seçilmelidir!</string>
+    <string name="kategoriIliski">Silinecek kategoriye bağlı yemek tarifleri bulunmaktadır!</string>
+    <string name="kategoriYazilmalı">Kategori alanı doldurulmalıdır!</string>
 </resources>
