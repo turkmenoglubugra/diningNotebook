@@ -1,2 +1,2 @@
-# yemekDefteriAndroidApp
-Yemek Defteri For Android
+# Dining Notebook Android App
+Dining Notebook For Android
